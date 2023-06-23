@@ -8,7 +8,7 @@ build:
 	./gradlew clean build
 
 install:
-	./gradlew install
+	./gradlew installDist
 
 lint:
 	./gradlew checkstyleMain checkstyleTest
