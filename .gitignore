@@ -8,6 +8,8 @@ build/
 app.iml
 app.zip:Zone.Identifier
 taskManager.mv.db
+taskManager.trace.db
+node
 
 ### STS ###
 .apt_generated
