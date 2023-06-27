@@ -11,10 +11,10 @@ spring:
     enabled: true
     change-log: classpath:db/changelog/db.changelog-master.yaml
 
-#  mvc:
-#    hiddenmethod:
-#      filter:
-#        enabled: true
+  mvc:
+    hiddenmethod:
+      filter:
+        enabled: true
 
   jpa:
     hibernate:

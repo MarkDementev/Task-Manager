@@ -29,4 +29,3 @@ databaseChangeLog:
             name: password
             type: VARCHAR(255)
         tableName: users
-
