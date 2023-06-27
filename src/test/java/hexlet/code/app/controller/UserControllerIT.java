@@ -28,30 +28,13 @@ import static hexlet.code.app.utils.TestUtils.fromJson;
 
 import static org.springframework.boot.test.context.SpringBootTest.WebEnvironment.RANDOM_PORT;
 import static org.springframework.http.MediaType.APPLICATION_JSON;
-import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.*;
+import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.post;
+import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
 
 import static org.assertj.core.api.Assertions.assertThat;
-
-
-
-import io.hexlet.javaspringblog.dto.UserDto;
-
-import org.junit.jupiter.api.Disabled;
-import org.springframework.web.bind.annotation.*;
-
-import static io.hexlet.javaspringblog.config.security.SecurityConfig.LOGIN;
-
-import static io.hexlet.javaspringblog.utils.TestUtils.TEST_USERNAME;
-import static io.hexlet.javaspringblog.utils.TestUtils.TEST_USERNAME_2;
-import static io.hexlet.javaspringblog.utils.TestUtils.asJson;
-import static org.junit.jupiter.api.Assertions.assertNotNull;
-import static org.junit.jupiter.api.Assertions.assertNull;
-import static org.junit.jupiter.api.Assertions.assertTrue;
-import static org.springframework.http.HttpStatus.CREATED;
-
 
 @AutoConfigureMockMvc
 @ActiveProfiles(TEST_PROFILE)
@@ -78,7 +61,8 @@ public class UserControllerIT {
                 .getResponse();
 
         final List<User> allCreatedUsers = userRepository.findAll();
-        final User createdUser = fromJson(response.getContentAsString(), new TypeReference<>() {});
+        final User createdUser = fromJson(response.getContentAsString(), new TypeReference<>() {
+        });
 
         assertThat(allCreatedUsers).hasSize(1);
         assertEquals(createdUser.getFirstName(), "fname");
