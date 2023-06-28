@@ -34,14 +34,14 @@ public class User {
     @GeneratedValue(strategy = IDENTITY)
     private Long id;
 
+    @Column(unique = true)
+    private String email;
+
     @NotBlank
     private String firstName;
 
     @NotBlank
     private String lastName;
-
-    @Column(unique = true)
-    private String email;
 
     @NotBlank
     @JsonIgnore

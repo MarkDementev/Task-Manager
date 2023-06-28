@@ -20,15 +20,11 @@ public class UserServiceImpl implements UserService {
 
     @Override
     public User getUser(long id) {
-        //идея - возвращать не самого пользователя, а возвращать его
-        //потом создавать нового, и прогнять через ДТО, чтобы
-        //почистить инфу и не показывать пароль
         return userRepository.findById(id).get();
     }
 
     @Override
     public Iterable<User> getUsers() {
-        //сделать как в идее выше, только итерируясь по листу?
         return userRepository.findAll();
     }
 

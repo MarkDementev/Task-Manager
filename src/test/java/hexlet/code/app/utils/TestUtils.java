@@ -5,6 +5,7 @@ import com.fasterxml.jackson.core.type.TypeReference;
 import com.fasterxml.jackson.databind.ObjectMapper;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Component;
 import org.springframework.test.web.servlet.MockMvc;
 import org.springframework.test.web.servlet.ResultActions;
 
@@ -17,6 +18,7 @@ import static org.springframework.http.MediaType.APPLICATION_JSON;
 
 import static hexlet.code.app.controller.UserController.USER_CONTROLLER_PATH;
 
+@Component
 public class TestUtils {
     @Autowired
     private UserRepository userRepository;
@@ -29,14 +31,25 @@ public class TestUtils {
     }
 
     private final UserDto testUserDto = new UserDto(
+            "email@email.com",
             "fname",
             "lname",
-            "email@email.com",
             "pwd"
+    );
+
+    private final UserDto testSecondUserDto = new UserDto(
+            "UPDATEDemail@email.com",
+            "UPDATEDfname",
+            "UPDATEDlname",
+            "UPDATEDpwd"
     );
 
     public UserDto getTestUserDto() {
         return testUserDto;
+    }
+
+    public UserDto getTestSecondUserDto() {
+        return testSecondUserDto;
     }
 
     public ResultActions createDefaultUser() throws Exception {
