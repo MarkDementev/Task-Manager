@@ -94,12 +94,7 @@ public class SecurityConfig {
                         UsernamePasswordAuthenticationFilter.class
                 )
                 .formLogin().disable()
-//                .formLogin((form) -> form
-//                        .loginPage("/login")
-//                        .permitAll()
-//                )
                 .sessionManagement().disable()
-//                .logout((logout) -> logout.permitAll());
                 .logout().disable();
 
         return http.build();

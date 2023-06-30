@@ -10,6 +10,8 @@ app.zip:Zone.Identifier
 taskManager.mv.db
 taskManager.trace.db
 node
+frontend/build
+frontend/node_modules
 
 ### STS ###
 .apt_generated
