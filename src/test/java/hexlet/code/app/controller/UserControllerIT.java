@@ -1,6 +1,7 @@
 package hexlet.code.app.controller;
 
 import hexlet.code.app.config.SpringConfigForIT;
+import hexlet.code.app.dto.LoginDto;
 import hexlet.code.app.model.User;
 
 import java.util.List;
@@ -21,6 +22,7 @@ import hexlet.code.app.repository.UserRepository;
 import hexlet.code.app.utils.TestUtils;
 
 import static hexlet.code.app.config.SpringConfigForIT.TEST_PROFILE;
+import static hexlet.code.app.config.security.SecurityConfig.LOGIN;
 import static hexlet.code.app.controller.UserController.USER_CONTROLLER_PATH;
 import static hexlet.code.app.controller.UserController.ID;
 import static hexlet.code.app.utils.TestUtils.asJson;
@@ -77,7 +79,7 @@ public class UserControllerIT {
 
         final User expectedUser = userRepository.findAll().get(0);
         final var response = utils.perform(
-                        get(USER_CONTROLLER_PATH + ID, expectedUser.getId())
+                        get(USER_CONTROLLER_PATH + ID, expectedUser.getId()), expectedUser.getEmail()
                 ).andExpect(status().isOk())
                 .andReturn()
                 .getResponse();
@@ -110,7 +112,8 @@ public class UserControllerIT {
 
         Long createdUserId = userRepository.findAll().get(0).getId();
         final var response = utils.perform(put(USER_CONTROLLER_PATH + ID, createdUserId)
-                        .content(asJson(utils.getTestSecondUserDto())).contentType(APPLICATION_JSON))
+                        .content(asJson(utils.getTestSecondUserDto())).contentType(APPLICATION_JSON),
+                        "email@email.com")
                 .andExpect(status().isOk())
                 .andReturn()
                 .getResponse();
@@ -130,12 +133,25 @@ public class UserControllerIT {
         utils.createDefaultUser();
 
         Long createdUserId = userRepository.findAll().get(0).getId();
-        final var response = utils.perform(delete(USER_CONTROLLER_PATH + ID, createdUserId))
+        final var response = utils.perform(delete(USER_CONTROLLER_PATH + ID, createdUserId),
+                        "email@email.com")
                 .andExpect(status().isOk())
                 .andReturn()
                 .getResponse();
         final List<User> allUsers = userRepository.findAll();
 
         assertThat(allUsers).hasSize(0);
+    }
+
+    @Test
+    public void loginTest() throws Exception {
+        utils.createDefaultUser();
+
+        final LoginDto loginDto = new LoginDto(
+                utils.getTestUserDto().getEmail(),
+                utils.getTestUserDto().getPassword()
+        );
+        final var loginRequest = post(LOGIN).content(asJson(loginDto)).contentType(APPLICATION_JSON);
+        utils.perform(loginRequest).andExpect(status().isOk());
     }
 }

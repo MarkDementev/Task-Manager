@@ -17,7 +17,6 @@ import static hexlet.code.app.config.SpringConfigForIT.TEST_PROFILE;
 @ComponentScan(basePackages = "hexlet.code.app")
 @PropertySource(value = "classpath:/config/application.yml")
 public class SpringConfigForIT {
-
     public static final String TEST_PROFILE = "test";
 
     @Bean
