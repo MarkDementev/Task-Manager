@@ -1,6 +1,6 @@
 package hexlet.code.app.filter;
 
-import hexlet.code.app.component.JWTHelper;
+import  hexlet.code.app.component.JWTHelper;
 
 import java.io.IOException;
 import java.util.Optional;
@@ -15,7 +15,7 @@ import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.web.util.matcher.RequestMatcher;
 import org.springframework.web.filter.OncePerRequestFilter;
 
-import static hexlet.code.app.config.security.SecurityConfig.DEFAULT_AUTHORITIES;
+import static  hexlet.code.app.config.security.SecurityConfig.DEFAULT_AUTHORITIES;
 
 import static org.springframework.http.HttpHeaders.AUTHORIZATION;
 import static org.springframework.security.web.authentication.UsernamePasswordAuthenticationFilter.SPRING_SECURITY_FORM_USERNAME_KEY;

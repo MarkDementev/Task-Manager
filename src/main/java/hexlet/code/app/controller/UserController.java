@@ -2,6 +2,7 @@ package hexlet.code.app.controller;
 
 import hexlet.code.app.dto.UserDto;
 import hexlet.code.app.model.User;
+import hexlet.code.app.repository.UserRepository;
 import hexlet.code.app.service.UserService;
 
 import jakarta.validation.Valid;
@@ -22,6 +23,7 @@ import org.springframework.web.bind.annotation.GetMapping;
 import java.util.List;
 
 import static hexlet.code.app.controller.UserController.USER_CONTROLLER_PATH;
+
 import static org.springframework.http.HttpStatus.CREATED;
 
 @AllArgsConstructor
@@ -31,6 +33,7 @@ public class UserController {
     public static final String USER_CONTROLLER_PATH = "/users";
     public static final String ID = "/{id}";
     private final UserService userService;
+    private final UserRepository userRepository;
     private static final String ONLY_OWNER_BY_ID = """
             @userRepository.findById(#id).get().getEmail() == authentication.getName()
         """;

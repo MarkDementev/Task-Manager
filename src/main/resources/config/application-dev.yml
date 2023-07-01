@@ -10,7 +10,7 @@ spring:
   datasource:
     username: ""
     password: ""
-    url: "jdbc:h2:./taskManager"
+    url: "jdbc:h2:./app"
 
   jpa:
     show-sql: true
