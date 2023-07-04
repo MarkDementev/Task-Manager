@@ -1,7 +1,6 @@
 package hexlet.code.app.controller;
 
 import hexlet.code.app.config.SpringConfigForIT;
-import hexlet.code.app.dto.LoginDto;
 import hexlet.code.app.model.User;
 
 import java.util.List;
@@ -79,7 +78,8 @@ public class UserControllerIT {
 
         final User expectedUser = userRepository.findAll().get(0);
         final var response = utils.perform(
-                        get(USER_CONTROLLER_PATH + ID, expectedUser.getId()), expectedUser.getEmail()
+                        get(USER_CONTROLLER_PATH + ID, expectedUser.getId()),
+                        expectedUser.getEmail()
                 ).andExpect(status().isOk())
                 .andReturn()
                 .getResponse();
@@ -147,11 +147,8 @@ public class UserControllerIT {
     public void loginTest() throws Exception {
         utils.createDefaultUser();
 
-        final LoginDto loginDto = new LoginDto(
-                utils.getTestUserDto().getEmail(),
-                utils.getTestUserDto().getPassword()
-        );
-        final var loginRequest = post(LOGIN).content(asJson(loginDto)).contentType(APPLICATION_JSON);
+        final var loginRequest = post(LOGIN).content(asJson(utils.getLoginDto())).contentType(APPLICATION_JSON);
+
         utils.perform(loginRequest).andExpect(status().isOk());
     }
 }
