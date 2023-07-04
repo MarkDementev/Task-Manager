@@ -4,11 +4,8 @@ build/
 !gradle/wrapper/gradle-wrapper.jar
 !**/src/main/**/build/
 !**/src/test/**/build/
-.idea
 app.iml
 app.zip:Zone.Identifier
-taskManager.mv.db
-taskManager.trace.db
 app.mv.db
 app.trace.db
 node
