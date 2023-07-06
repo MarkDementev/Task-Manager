@@ -6,49 +6,70 @@ import jakarta.persistence.Id;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.Temporal;
 import jakarta.persistence.OneToOne;
+import jakarta.persistence.ManyToOne;
+//import jakarta.persistence.JoinColumn;
 
 import jakarta.validation.constraints.NotBlank;
-//import jakarta.validation.constraints.NotNull;
+import jakarta.validation.constraints.NotNull;
 
 import lombok.AllArgsConstructor;
 import lombok.Getter;
-import lombok.NoArgsConstructor;
 import lombok.Setter;
+import lombok.NoArgsConstructor;
 
 import org.hibernate.annotations.CreationTimestamp;
+
+import java.util.Date;
 
 import static jakarta.persistence.GenerationType.IDENTITY;
 import static jakarta.persistence.TemporalType.TIMESTAMP;
 
-import java.util.Date;
-
 @Entity
-@Table(name = "taskStatuses")
-@Getter
-@Setter
+@Table(name = "tasks")
 @NoArgsConstructor
 @AllArgsConstructor
-public class TaskStatus {
+@Getter
+@Setter
+public class Task {
     @Id
     @GeneratedValue(strategy = IDENTITY)
     private Long id;
 
-//    @NotNull
-    @OneToOne
-    private Task task;
-
-//    @NotNull
-//    @OneToOne(mappedBy = "taskStatus")
-//    private Task task;
-
     @NotBlank
     private String name;
+
+    private String description;
+
+    @NotNull
+    @ManyToOne
+    private User author;
+
+    @ManyToOne
+    private User executor;
+
+    @NotNull
+    @OneToOne
+    private TaskStatus taskStatus;
+
+//    @NotNull
+//    @ManyToOne
+//    @JoinColumn(name = "author_id")
+//    private User author;
+//
+//    @ManyToOne
+//    @JoinColumn(name = "executor_id")
+//    private User executor;
+
+//    @NotNull
+//    @OneToOne
+//    @JoinColumn(name = "taskStatus_id")
+//    private TaskStatus taskStatus;
 
     @CreationTimestamp
     @Temporal(TIMESTAMP)
     private Date createdAt;
 
-    public TaskStatus(final Long id) {
+    public Task(final Long id) {
         this.id = id;
     }
 }

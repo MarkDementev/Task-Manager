@@ -29,6 +29,7 @@ import org.springframework.security.web.util.matcher.RequestMatcher;
 
 import static hexlet.code.app.controller.TaskStatusController.ID;
 import static hexlet.code.app.controller.TaskStatusController.TASK_STATUS_CONTROLLER_PATH;
+import static hexlet.code.app.controller.TaskController.TASK_CONTROLLER_PATH;
 import static hexlet.code.app.controller.UserController.USER_CONTROLLER_PATH;
 
 import static org.springframework.http.HttpMethod.GET;
@@ -59,6 +60,8 @@ public class SecurityConfig {
                 new AntPathRequestMatcher(baseUrl + USER_CONTROLLER_PATH, GET.toString()),
                 new AntPathRequestMatcher(baseUrl + TASK_STATUS_CONTROLLER_PATH, GET.toString()),
                 new AntPathRequestMatcher(baseUrl + TASK_STATUS_CONTROLLER_PATH + ID, GET.toString()),
+                new AntPathRequestMatcher(baseUrl + TASK_CONTROLLER_PATH, GET.toString()),
+                new AntPathRequestMatcher(baseUrl + TASK_CONTROLLER_PATH + ID, GET.toString()),
                 new NegatedRequestMatcher(new AntPathRequestMatcher(baseUrl + "/**"))
         );
     }
