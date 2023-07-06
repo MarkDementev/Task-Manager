@@ -5,8 +5,6 @@ import com.fasterxml.jackson.core.type.TypeReference;
 import com.fasterxml.jackson.databind.ObjectMapper;
 
 import hexlet.code.app.dto.UserDto;
-import hexlet.code.app.dto.TaskDto;
-import hexlet.code.app.dto.TaskToUpdateDto;
 import hexlet.code.app.dto.TaskStatusDto;
 import hexlet.code.app.dto.LoginDto;
 
@@ -25,7 +23,6 @@ import org.springframework.test.web.servlet.request.MockHttpServletRequestBuilde
 import java.util.Map;
 
 import static hexlet.code.app.config.security.SecurityConfig.LOGIN;
-import static hexlet.code.app.controller.TaskController.TASK_CONTROLLER_PATH;
 import static hexlet.code.app.controller.TaskStatusController.TASK_STATUS_CONTROLLER_PATH;
 //import static hexlet.code.app.controller.UserController.ID;
 import static org.springframework.http.HttpHeaders.AUTHORIZATION;
