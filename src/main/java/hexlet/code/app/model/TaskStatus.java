@@ -5,7 +5,7 @@ import jakarta.persistence.Table;
 import jakarta.persistence.Id;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.Temporal;
-import jakarta.persistence.OneToOne;
+//import jakarta.persistence.OneToOne;
 
 import jakarta.validation.constraints.NotBlank;
 //import jakarta.validation.constraints.NotNull;
@@ -34,8 +34,8 @@ public class TaskStatus {
     private Long id;
 
 //    @NotNull
-    @OneToOne
-    private Task task;
+//    @OneToOne
+//    private Task task;
 
 //    @NotNull
 //    @OneToOne(mappedBy = "taskStatus")
