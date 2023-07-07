@@ -7,16 +7,17 @@ import com.fasterxml.jackson.databind.ObjectMapper;
 import hexlet.code.app.dto.UserDto;
 import hexlet.code.app.dto.TaskStatusDto;
 import hexlet.code.app.dto.LoginDto;
+import hexlet.code.app.dto.LabelDto;
+import hexlet.code.app.component.JWTHelper;
+import hexlet.code.app.repository.UserRepository;
+import hexlet.code.app.repository.TaskStatusRepository;
+import hexlet.code.app.repository.TaskRepository;
+import hexlet.code.app.repository.LabelRepository;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 import org.springframework.test.web.servlet.MockMvc;
 import org.springframework.test.web.servlet.ResultActions;
-
-import hexlet.code.app.component.JWTHelper;
-import hexlet.code.app.repository.UserRepository;
-import hexlet.code.app.repository.TaskStatusRepository;
-import hexlet.code.app.repository.TaskRepository;
 
 import org.springframework.test.web.servlet.request.MockHttpServletRequestBuilder;
 
@@ -24,14 +25,12 @@ import java.util.Map;
 
 import static hexlet.code.app.config.security.SecurityConfig.LOGIN;
 import static hexlet.code.app.controller.TaskStatusController.TASK_STATUS_CONTROLLER_PATH;
-//import static hexlet.code.app.controller.UserController.ID;
+import static hexlet.code.app.controller.LabelController.LABEL_CONTROLLER_PATH;
+import static hexlet.code.app.controller.UserController.USER_CONTROLLER_PATH;
+
 import static org.springframework.http.HttpHeaders.AUTHORIZATION;
-//import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.delete;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.post;
 import static org.springframework.http.MediaType.APPLICATION_JSON;
-
-import static hexlet.code.app.controller.UserController.USER_CONTROLLER_PATH;
-//import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 
 @Component
 public class TestUtils {
@@ -39,6 +38,8 @@ public class TestUtils {
     private UserRepository userRepository;
     @Autowired
     private TaskStatusRepository taskStatusRepository;
+    @Autowired
+    private LabelRepository labelRepository;
     @Autowired
     private TaskRepository taskRepository;
     @Autowired
@@ -49,6 +50,7 @@ public class TestUtils {
 
     public void tearDown() {
         taskRepository.deleteAll();
+        labelRepository.deleteAll();
         taskStatusRepository.deleteAll();
         userRepository.deleteAll();
     }
@@ -80,6 +82,14 @@ public class TestUtils {
             "В работе"
     );
 
+    private final LabelDto labelDto = new LabelDto(
+            "Новая метка"
+    );
+
+    private final LabelDto secondLabelDto = new LabelDto(
+            "Баг"
+    );
+
     public UserDto getUserDto() {
         return userDto;
     }
@@ -100,6 +110,14 @@ public class TestUtils {
         return secondTaskStatusDto;
     }
 
+    public LabelDto getLabelDto() {
+        return labelDto;
+    }
+
+    public LabelDto getSecondLabelDto() {
+        return secondLabelDto;
+    }
+
     public ResultActions createDefaultUser() throws Exception {
         return createUser(userDto);
     }
@@ -110,7 +128,12 @@ public class TestUtils {
 
     public ResultActions createDefaultUserLoginTaskStatus() throws Exception {
         createDefaultUser();
-        return createTaskStatus(taskStatusDto, getLoginDto());
+        return createTaskStatus(taskStatusDto, loginDto);
+    }
+
+    public ResultActions createDefaultUserLoginLabel() throws Exception {
+        createDefaultUser();
+        return createLabel(labelDto, loginDto);
     }
 
     public ResultActions createUser(final UserDto dto) throws Exception {
@@ -121,8 +144,19 @@ public class TestUtils {
         return perform(request);
     }
 
+    public ResultActions createLabel(final LabelDto dto, final LoginDto loginDto) throws Exception {
+        login(loginDto);
+
+        return perform(post(LABEL_CONTROLLER_PATH)
+                .content(asJson(dto)).contentType(APPLICATION_JSON), loginDto.getEmail());
+    }
+
+    public ResultActions login(final LoginDto loginDto) throws Exception {
+        return perform(post(LOGIN).content(asJson(loginDto)).contentType(APPLICATION_JSON));
+    }
+
     public ResultActions createTaskStatus(final TaskStatusDto dto, final LoginDto loginDto) throws Exception {
-        perform(post(LOGIN).content(asJson(loginDto)).contentType(APPLICATION_JSON));
+        login(loginDto);
 
         return perform(post(TASK_STATUS_CONTROLLER_PATH)
                 .content(asJson(dto)).contentType(APPLICATION_JSON), loginDto.getEmail());

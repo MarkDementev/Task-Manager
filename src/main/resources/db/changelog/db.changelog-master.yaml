@@ -1,6 +1,27 @@
 databaseChangeLog:
 - changeSet:
-    id: 1688652373912-1
+    id: 1688751524914-1
+    author: mark_dementev (generated)
+    changes:
+    - createTable:
+        columns:
+        - column:
+            autoIncrement: true
+            constraints:
+              nullable: false
+              primaryKey: true
+              primaryKeyName: labelsPK
+            name: id
+            type: BIGINT
+        - column:
+            name: created_at
+            type: TIMESTAMP(6)
+        - column:
+            name: name
+            type: VARCHAR(255)
+        tableName: labels
+- changeSet:
+    id: 1688751524914-2
     author: mark_dementev (generated)
     changes:
     - createTable:
@@ -21,7 +42,7 @@ databaseChangeLog:
             type: VARCHAR(255)
         tableName: task_statuses
 - changeSet:
-    id: 1688652373912-2
+    id: 1688751524914-3
     author: mark_dementev (generated)
     changes:
     - createTable:
@@ -54,7 +75,7 @@ databaseChangeLog:
             type: BIGINT
         tableName: tasks
 - changeSet:
-    id: 1688652373912-3
+    id: 1688751524914-4
     author: mark_dementev (generated)
     changes:
     - createTable:
@@ -84,7 +105,7 @@ databaseChangeLog:
             type: VARCHAR(255)
         tableName: users
 - changeSet:
-    id: 1688652373912-4
+    id: 1688751524914-5
     author: mark_dementev (generated)
     changes:
     - addForeignKeyConstraint:
@@ -97,7 +118,7 @@ databaseChangeLog:
         referencedTableName: task_statuses
         validate: true
 - changeSet:
-    id: 1688652373912-5
+    id: 1688751524914-6
     author: mark_dementev (generated)
     changes:
     - addForeignKeyConstraint:
@@ -110,7 +131,7 @@ databaseChangeLog:
         referencedTableName: users
         validate: true
 - changeSet:
-    id: 1688652373912-6
+    id: 1688751524914-7
     author: mark_dementev (generated)
     changes:
     - addForeignKeyConstraint:
