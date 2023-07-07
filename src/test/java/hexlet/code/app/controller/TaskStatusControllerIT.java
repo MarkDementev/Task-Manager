@@ -26,7 +26,9 @@ import static hexlet.code.app.utils.TestUtils.asJson;
 import static hexlet.code.app.utils.TestUtils.fromJson;
 
 import static org.assertj.core.api.Assertions.assertThat;
+
 import static org.junit.jupiter.api.Assertions.assertEquals;
+
 import static org.springframework.boot.test.context.SpringBootTest.WebEnvironment.RANDOM_PORT;
 import static org.springframework.http.MediaType.APPLICATION_JSON;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.post;
@@ -39,7 +41,7 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
 @ActiveProfiles(TEST_PROFILE)
 @ExtendWith(SpringExtension.class)
 @SpringBootTest(webEnvironment = RANDOM_PORT, classes = SpringConfigForIT.class)
-public class TaskStatusIT {
+public class TaskStatusControllerIT {
     @Autowired
     private TaskStatusRepository taskStatusRepository;
     @Autowired
@@ -55,14 +57,16 @@ public class TaskStatusIT {
         utils.createDefaultUser();
 
         final var response = utils.perform(
-                        post(TASK_STATUS_CONTROLLER_PATH).content(asJson(utils.getTestTaskStatusDto()))
+                        post(TASK_STATUS_CONTROLLER_PATH).content(asJson(utils.getTaskStatusDto()))
                                 .contentType(APPLICATION_JSON),
                         "email@email.com"
                 )
                 .andExpect(status().isCreated())
                 .andReturn()
                 .getResponse();
+
         response.setContentType("application/json;charset=UTF-8");
+
         final List<TaskStatus> allCreatedTaskStatuses = taskStatusRepository.findAll();
         final TaskStatus createdTaskStatus = fromJson(response.getContentAsString(), new TypeReference<>() {
         });
@@ -73,7 +77,7 @@ public class TaskStatusIT {
 
     @Test
     public void getTaskStatusTest() throws Exception {
-        utils.createDefaultTaskStatus();
+        utils.createDefaultUserLoginTaskStatus();
 
         final TaskStatus expectedTaskStatus = taskStatusRepository.findAll().get(0);
         final var response = utils.perform(
@@ -81,7 +85,9 @@ public class TaskStatusIT {
                 ).andExpect(status().isOk())
                 .andReturn()
                 .getResponse();
+
         response.setContentType("application/json;charset=UTF-8");
+
         final TaskStatus taskStatus = fromJson(response.getContentAsString(), new TypeReference<>() {
         });
 
@@ -91,7 +97,7 @@ public class TaskStatusIT {
 
     @Test
     public void getTaskStatusesTest() throws Exception {
-        utils.createDefaultTaskStatus();
+        utils.createDefaultUserLoginTaskStatus();
 
         final var response = utils.perform(get(TASK_STATUS_CONTROLLER_PATH))
                 .andExpect(status().isOk())
@@ -105,17 +111,19 @@ public class TaskStatusIT {
 
     @Test
     public void updateTaskStatusTest() throws Exception {
-        utils.createDefaultTaskStatus();
+        utils.createDefaultUserLoginTaskStatus();
 
         Long createdTaskStatusId = taskStatusRepository.findAll().get(0).getId();
         final var response = utils.perform(put(TASK_STATUS_CONTROLLER_PATH + ID, createdTaskStatusId)
-                                .content(asJson(utils.getTestSecondTaskStatusDto())).contentType(APPLICATION_JSON),
+                                .content(asJson(utils.getSecondTaskStatusDto())).contentType(APPLICATION_JSON),
                                 "email@email.com"
                 )
                 .andExpect(status().isOk())
                 .andReturn()
                 .getResponse();
+
         response.setContentType("application/json;charset=UTF-8");
+
         final TaskStatus taskStatus = fromJson(response.getContentAsString(), new TypeReference<>() {
         });
         final List<TaskStatus> allTaskStatuses = taskStatusRepository.findAll();
@@ -127,14 +135,16 @@ public class TaskStatusIT {
 
     @Test
     public void deleteTaskStatusTest() throws Exception {
-        utils.createDefaultTaskStatus();
+        utils.createDefaultUserLoginTaskStatus();
 
         Long createdTaskStatusId = taskStatusRepository.findAll().get(0).getId();
-        final var response = utils.perform(delete(TASK_STATUS_CONTROLLER_PATH + ID, createdTaskStatusId),
+
+        utils.perform(delete(TASK_STATUS_CONTROLLER_PATH + ID, createdTaskStatusId),
                         "email@email.com")
                 .andExpect(status().isOk())
                 .andReturn()
                 .getResponse();
+
         final List<TaskStatus> allTaskStatuses = taskStatusRepository.findAll();
 
         assertThat(allTaskStatuses).hasSize(0);

@@ -11,11 +11,6 @@ import lombok.NoArgsConstructor;
 @NoArgsConstructor
 @AllArgsConstructor
 public class TaskDto {
-    @NotBlank
-    private String name;
-
-    private String description;
-
     @NotNull
     private Long authorId;
 
@@ -23,4 +18,9 @@ public class TaskDto {
 
     @NotNull
     private Long taskStatusId;
+
+    @NotBlank
+    private String name;
+
+    private String description;
 }

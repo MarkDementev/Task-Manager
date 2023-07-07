@@ -11,13 +11,13 @@ import lombok.NoArgsConstructor;
 @NoArgsConstructor
 @AllArgsConstructor
 public class TaskToUpdateDto {
-    @NotBlank
-    private String name;
-
-    private String description;
-
     private Long executorId;
 
     @NotNull
     private Long taskStatusId;
+
+    @NotBlank
+    private String name;
+
+    private String description;
 }

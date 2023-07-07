@@ -57,7 +57,7 @@ public class UserControllerIT {
     @Test
     public void createUserTest() throws Exception {
         final var response = utils.perform(
-                    post(USER_CONTROLLER_PATH).content(asJson(utils.getTestUserDto())).contentType(APPLICATION_JSON)
+                    post(USER_CONTROLLER_PATH).content(asJson(utils.getUserDto())).contentType(APPLICATION_JSON)
                 )
                 .andExpect(status().isCreated())
                 .andReturn()
@@ -112,7 +112,7 @@ public class UserControllerIT {
 
         Long createdUserId = userRepository.findAll().get(0).getId();
         final var response = utils.perform(put(USER_CONTROLLER_PATH + ID, createdUserId)
-                        .content(asJson(utils.getTestSecondUserDto())).contentType(APPLICATION_JSON),
+                        .content(asJson(utils.getSecondUserDto())).contentType(APPLICATION_JSON),
                         "email@email.com")
                 .andExpect(status().isOk())
                 .andReturn()
@@ -133,11 +133,13 @@ public class UserControllerIT {
         utils.createDefaultUser();
 
         Long createdUserId = userRepository.findAll().get(0).getId();
-        final var response = utils.perform(delete(USER_CONTROLLER_PATH + ID, createdUserId),
+
+        utils.perform(delete(USER_CONTROLLER_PATH + ID, createdUserId),
                         "email@email.com")
                 .andExpect(status().isOk())
                 .andReturn()
                 .getResponse();
+
         final List<User> allUsers = userRepository.findAll();
 
         assertThat(allUsers).hasSize(0);

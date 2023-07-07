@@ -7,7 +7,6 @@ import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.Temporal;
 import jakarta.persistence.OneToOne;
 import jakarta.persistence.ManyToOne;
-//import jakarta.persistence.JoinColumn;
 
 import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.NotNull;
@@ -50,20 +49,6 @@ public class Task {
     @NotNull
     @OneToOne
     private TaskStatus taskStatus;
-
-//    @NotNull
-//    @ManyToOne
-//    @JoinColumn(name = "author_id")
-//    private User author;
-//
-//    @ManyToOne
-//    @JoinColumn(name = "executor_id")
-//    private User executor;
-
-//    @NotNull
-//    @OneToOne
-//    @JoinColumn(name = "taskStatus_id")
-//    private TaskStatus taskStatus;
 
     @CreationTimestamp
     @Temporal(TIMESTAMP)

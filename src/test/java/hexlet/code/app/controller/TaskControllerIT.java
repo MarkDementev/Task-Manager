@@ -26,10 +26,8 @@ import org.springframework.test.context.junit.jupiter.SpringExtension;
 import java.util.List;
 
 import static hexlet.code.app.config.SpringConfigForIT.TEST_PROFILE;
-import static hexlet.code.app.config.security.SecurityConfig.LOGIN;
 import static hexlet.code.app.controller.TaskStatusController.ID;
 import static hexlet.code.app.controller.TaskController.TASK_CONTROLLER_PATH;
-import static hexlet.code.app.controller.TaskStatusController.TASK_STATUS_CONTROLLER_PATH;
 import static hexlet.code.app.utils.TestUtils.asJson;
 import static hexlet.code.app.utils.TestUtils.fromJson;
 
@@ -49,7 +47,7 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
 @ActiveProfiles(TEST_PROFILE)
 @ExtendWith(SpringExtension.class)
 @SpringBootTest(webEnvironment = RANDOM_PORT, classes = SpringConfigForIT.class)
-public class TaskIT {
+public class TaskControllerIT {
     @Autowired
     private TaskRepository taskRepository;
     @Autowired
@@ -66,21 +64,18 @@ public class TaskIT {
 
     @Test
     public void createTaskTest() throws Exception {
-        utils.createDefaultUser();
-        utils.perform(post(LOGIN).content(asJson(utils.getLoginDto())).contentType(APPLICATION_JSON));
-        utils.perform(post(TASK_STATUS_CONTROLLER_PATH)
-                        .content(asJson(utils.getTestTaskStatusDto())).contentType(APPLICATION_JSON),
-                "email@email.com");
+        utils.createDefaultUserLoginTaskStatus();
 
         final TaskDto taskDto = new TaskDto(
+                userRepository.findAll().get(0).getId(),
+                userRepository.findAll().get(0).getId(),
+                taskStatusRepository.findAll().get(0).getId(),
                 "Новая задача",
-                "Описание новой задачи",
-                userRepository.findAll().get(0).getId(),
-                userRepository.findAll().get(0).getId(),
-                taskStatusRepository.findAll().get(0).getId()
+                "Описание новой задачи"
         );
         final User createdUser = userRepository.findAll().get(0);
         final TaskStatus createdTaskStatus = taskStatusRepository.findAll().get(0);
+
         final var response = utils.perform(
                         post(TASK_CONTROLLER_PATH).content(asJson(taskDto))
                                 .contentType(APPLICATION_JSON),
@@ -97,28 +92,25 @@ public class TaskIT {
         final List<Task> allCreatedTasks = taskRepository.findAll();
 
         assertThat(allCreatedTasks).hasSize(1);
-        assertEquals(createdTasks.getName(), "Новая задача");
-        assertEquals(createdTasks.getDescription(), "Описание новой задачи");
         assertEquals(createdTasks.getAuthor().getId(), createdUser.getId());
         assertEquals(createdTasks.getExecutor().getId(), createdUser.getId());
         assertEquals(createdTasks.getTaskStatus().getId(), createdTaskStatus.getId());
+        assertEquals(createdTasks.getName(), "Новая задача");
+        assertEquals(createdTasks.getDescription(), "Описание новой задачи");
     }
 
     @Test
     public void getTaskTest() throws Exception {
-        utils.createDefaultUser();
-        utils.perform(post(LOGIN).content(asJson(utils.getLoginDto())).contentType(APPLICATION_JSON));
-        utils.perform(post(TASK_STATUS_CONTROLLER_PATH)
-                        .content(asJson(utils.getTestTaskStatusDto())).contentType(APPLICATION_JSON),
-                "email@email.com");
+        utils.createDefaultUserLoginTaskStatus();
 
         final TaskDto taskDto = new TaskDto(
+                userRepository.findAll().get(0).getId(),
+                userRepository.findAll().get(0).getId(),
+                taskStatusRepository.findAll().get(0).getId(),
                 "Новая задача",
-                "Описание новой задачи",
-                userRepository.findAll().get(0).getId(),
-                userRepository.findAll().get(0).getId(),
-                taskStatusRepository.findAll().get(0).getId()
+                "Описание новой задачи"
         );
+
         utils.perform(post(TASK_CONTROLLER_PATH)
                 .content(asJson(taskDto)).contentType(APPLICATION_JSON), "email@email.com");
 
@@ -135,28 +127,25 @@ public class TaskIT {
         });
 
         assertEquals(expectedTask.getId(), task.getId());
-        assertEquals(expectedTask.getName(), task.getName());
-        assertEquals(expectedTask.getDescription(), task.getDescription());
         assertEquals(expectedTask.getAuthor().getId(), task.getAuthor().getId());
         assertEquals(expectedTask.getExecutor().getId(), task.getExecutor().getId());
         assertEquals(expectedTask.getTaskStatus().getId(), task.getTaskStatus().getId());
+        assertEquals(expectedTask.getName(), task.getName());
+        assertEquals(expectedTask.getDescription(), task.getDescription());
     }
 
     @Test
     public void getTasksTest() throws Exception {
-        utils.createDefaultUser();
-        utils.perform(post(LOGIN).content(asJson(utils.getLoginDto())).contentType(APPLICATION_JSON));
-        utils.perform(post(TASK_STATUS_CONTROLLER_PATH)
-                        .content(asJson(utils.getTestTaskStatusDto())).contentType(APPLICATION_JSON),
-                "email@email.com");
+        utils.createDefaultUserLoginTaskStatus();
 
         final TaskDto taskDto = new TaskDto(
+                userRepository.findAll().get(0).getId(),
+                userRepository.findAll().get(0).getId(),
+                taskStatusRepository.findAll().get(0).getId(),
                 "Новая задача",
-                "Описание новой задачи",
-                userRepository.findAll().get(0).getId(),
-                userRepository.findAll().get(0).getId(),
-                taskStatusRepository.findAll().get(0).getId()
+                "Описание новой задачи"
         );
+
         utils.perform(post(TASK_CONTROLLER_PATH)
                 .content(asJson(taskDto)).contentType(APPLICATION_JSON), "email@email.com");
 
@@ -172,28 +161,26 @@ public class TaskIT {
 
     @Test
     public void updateTaskTest() throws Exception {
-        utils.createDefaultUser();
+        utils.createDefaultUserLoginTaskStatus();
         utils.createSecondDefaultUser();
-        utils.perform(post(LOGIN).content(asJson(utils.getLoginDto())).contentType(APPLICATION_JSON));
-        utils.perform(post(TASK_STATUS_CONTROLLER_PATH)
-                        .content(asJson(utils.getTestTaskStatusDto())).contentType(APPLICATION_JSON),
-                "email@email.com");
 
         final TaskDto taskDto = new TaskDto(
+                userRepository.findAll().get(0).getId(),
+                userRepository.findAll().get(0).getId(),
+                taskStatusRepository.findAll().get(0).getId(),
                 "Новая задача",
-                "Описание новой задачи",
-                userRepository.findAll().get(0).getId(),
-                userRepository.findAll().get(0).getId(),
-                taskStatusRepository.findAll().get(0).getId()
+                "Описание новой задачи"
         );
+        final TaskToUpdateDto testSecondTaskDto = new TaskToUpdateDto(
+                this.userRepository.findAll().get(1).getId(),
+                this.taskStatusRepository.findAll().get(0).getId(),
+                "Новое имя",
+                "Новое описание"
+        );
+
         utils.perform(post(TASK_CONTROLLER_PATH)
                 .content(asJson(taskDto)).contentType(APPLICATION_JSON), "email@email.com");
-        final TaskToUpdateDto testSecondTaskDto = new TaskToUpdateDto(
-                "Новое имя",
-                "Новое описание",
-                this.userRepository.findAll().get(1).getId(),
-                this.taskStatusRepository.findAll().get(0).getId()
-        );
+
         Long createdTaskId = taskRepository.findAll().get(0).getId();
         final var response = utils.perform(put(TASK_CONTROLLER_PATH + ID, createdTaskId)
                                 .content(asJson(testSecondTaskDto)).contentType(APPLICATION_JSON),
@@ -210,37 +197,36 @@ public class TaskIT {
         final List<Task> allTasks = taskRepository.findAll();
 
         assertThat(allTasks).hasSize(1);
-        assertEquals(task.getName(), "Новое имя");
-        assertEquals(task.getDescription(), "Новое описание");
         assertEquals(task.getAuthor().getEmail(), "email@email.com");
         assertEquals(task.getExecutor().getEmail(), "UPDATEDemail@email.com");
         assertEquals(task.getTaskStatus().getName(), "Новый");
+        assertEquals(task.getName(), "Новое имя");
+        assertEquals(task.getDescription(), "Новое описание");
     }
 
     @Test
     public void deleteTaskTest() throws Exception {
-        utils.createDefaultUser();
-        utils.perform(post(LOGIN).content(asJson(utils.getLoginDto())).contentType(APPLICATION_JSON));
-        utils.perform(post(TASK_STATUS_CONTROLLER_PATH)
-                        .content(asJson(utils.getTestTaskStatusDto())).contentType(APPLICATION_JSON),
-                "email@email.com");
+        utils.createDefaultUserLoginTaskStatus();
 
         final TaskDto taskDto = new TaskDto(
+                userRepository.findAll().get(0).getId(),
+                userRepository.findAll().get(0).getId(),
+                taskStatusRepository.findAll().get(0).getId(),
                 "Новая задача",
-                "Описание новой задачи",
-                userRepository.findAll().get(0).getId(),
-                userRepository.findAll().get(0).getId(),
-                taskStatusRepository.findAll().get(0).getId()
+                "Описание новой задачи"
         );
+
         utils.perform(post(TASK_CONTROLLER_PATH)
                 .content(asJson(taskDto)).contentType(APPLICATION_JSON), "email@email.com");
 
         Long createdTaskId = taskRepository.findAll().get(0).getId();
-        final var response = utils.perform(delete(TASK_CONTROLLER_PATH + ID, createdTaskId),
+
+        utils.perform(delete(TASK_CONTROLLER_PATH + ID, createdTaskId),
                         "email@email.com")
                 .andExpect(status().isOk())
                 .andReturn()
                 .getResponse();
+
         final List<Task> allTasks = taskRepository.findAll();
 
         assertThat(allTasks).hasSize(0);

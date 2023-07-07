@@ -53,14 +53,14 @@ public class TestUtils {
         userRepository.deleteAll();
     }
 
-    private final UserDto testUserDto = new UserDto(
+    private final UserDto userDto = new UserDto(
             "email@email.com",
             "fname",
             "lname",
             "pwd"
     );
 
-    private final UserDto testSecondUserDto = new UserDto(
+    private final UserDto secondUserDto = new UserDto(
             "UPDATEDemail@email.com",
             "UPDATEDfname",
             "UPDATEDlname",
@@ -68,96 +68,50 @@ public class TestUtils {
     );
 
     private final LoginDto loginDto = new LoginDto(
-            getTestUserDto().getEmail(),
-            getTestUserDto().getPassword()
+            getUserDto().getEmail(),
+            getUserDto().getPassword()
     );
 
-    private final TaskStatusDto testTaskStatusDto = new TaskStatusDto(
+    private final TaskStatusDto taskStatusDto = new TaskStatusDto(
             "Новый"
     );
 
-    private final TaskStatusDto testSecondTaskStatusDto = new TaskStatusDto(
+    private final TaskStatusDto secondTaskStatusDto = new TaskStatusDto(
             "В работе"
     );
 
-//    private final TaskDto testTaskDto = new TaskDto(
-//            "Новая задача",
-//            "Описание новой задачи",
-//            this.userRepository.findAll().get(0).getId(),
-//            this.taskStatusRepository.findAll().get(1).getId(),
-//            this.userRepository.findAll().get(0).getId()
-//    );
-
-//    private final TaskToUpdateDto testSecondTaskDto = new TaskToUpdateDto(
-//            "Новое имя",
-//            "Новое описание",
-//            this.userRepository.findAll().get(0).getId(),
-//            this.taskStatusRepository.findAll().get(0).getId()
-//    );
-
-//    private final TaskDto testTaskDto = new TaskDto(
-//            "Новая задача",
-//            "Описание новой задачи",
-//            1L,
-//            2L,
-//            1L
-//    );
-//
-//    private final TaskToUpdateDto testSecondTaskDto = new TaskToUpdateDto(
-//            "Новое имя",
-//            "Новое описание",
-//            1L,
-//            1L
-//    );
-
-    public UserDto getTestUserDto() {
-        return testUserDto;
+    public UserDto getUserDto() {
+        return userDto;
     }
 
-    public UserDto getTestSecondUserDto() {
-        return testSecondUserDto;
+    public UserDto getSecondUserDto() {
+        return secondUserDto;
     }
 
     public LoginDto getLoginDto() {
         return loginDto;
     }
 
-    public TaskStatusDto getTestTaskStatusDto() {
-        return testTaskStatusDto;
+    public TaskStatusDto getTaskStatusDto() {
+        return taskStatusDto;
     }
 
-    public TaskStatusDto getTestSecondTaskStatusDto() {
-        return testSecondTaskStatusDto;
+    public TaskStatusDto getSecondTaskStatusDto() {
+        return secondTaskStatusDto;
     }
-
-//    public TaskDto getTestTaskDto() {
-//        return testTaskDto;
-//    }
-//
-//    public TaskToUpdateDto getTestSecondTaskDto() {
-//        return testSecondTaskDto;
-//    }
 
     public ResultActions createDefaultUser() throws Exception {
-        return createUser(testUserDto);
+        return createUser(userDto);
     }
 
     public ResultActions createSecondDefaultUser() throws Exception {
-        return createUser(testSecondUserDto);
+        return createUser(secondUserDto);
     }
 
-    public ResultActions createDefaultTaskStatus() throws Exception {
-        return createTaskStatus(testTaskStatusDto);
+    public ResultActions createDefaultUserLoginTaskStatus() throws Exception {
+        createDefaultUser();
+        return createTaskStatus(taskStatusDto, getLoginDto());
     }
-
-//    public ResultActions createDefaultTwoUsersTaskStatusTask() throws Exception {
-//        createDefaultTaskStatus();
-//        createSecondDefaultUser();
-//
-//        return perform(post(TASK_CONTROLLER_PATH)
-//                        .content(asJson(getTestTaskDto())).contentType(APPLICATION_JSON),
-//                "email@email.com");
-//    }
 
     public ResultActions createUser(final UserDto dto) throws Exception {
         final var request = post(USER_CONTROLLER_PATH)
@@ -167,14 +121,11 @@ public class TestUtils {
         return perform(request);
     }
 
-    public ResultActions createTaskStatus(final TaskStatusDto dto) throws Exception {
-        createDefaultUser();
-        final var loginRequest = post(LOGIN).content(asJson(getLoginDto())).contentType(APPLICATION_JSON);
-        perform(loginRequest);
+    public ResultActions createTaskStatus(final TaskStatusDto dto, final LoginDto loginDto) throws Exception {
+        perform(post(LOGIN).content(asJson(loginDto)).contentType(APPLICATION_JSON));
 
         return perform(post(TASK_STATUS_CONTROLLER_PATH)
-                .content(asJson(dto)).contentType(APPLICATION_JSON),
-                "email@email.com");
+                .content(asJson(dto)).contentType(APPLICATION_JSON), loginDto.getEmail());
     }
 
     public static String asJson(final Object object) throws JsonProcessingException {

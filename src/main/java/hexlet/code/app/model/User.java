@@ -6,7 +6,6 @@ import jakarta.persistence.Id;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.Temporal;
 import jakarta.persistence.Column;
-//import jakarta.persistence.OneToMany;
 
 import lombok.Getter;
 import lombok.Setter;
@@ -20,7 +19,6 @@ import com.fasterxml.jackson.annotation.JsonIgnore;
 import org.hibernate.annotations.CreationTimestamp;
 
 import java.util.Date;
-//import java.util.List;
 
 import static jakarta.persistence.GenerationType.IDENTITY;
 import static jakarta.persistence.TemporalType.TIMESTAMP;
@@ -35,12 +33,6 @@ public class User {
     @Id
     @GeneratedValue(strategy = IDENTITY)
     private Long id;
-
-//    @OneToMany(mappedBy = "author")
-//    private List<Task> createdTasks;
-//
-//    @OneToMany(mappedBy = "executor")
-//    private List<Task> tasksOnExecution;
 
     @Column(unique = true)
     private String email;
