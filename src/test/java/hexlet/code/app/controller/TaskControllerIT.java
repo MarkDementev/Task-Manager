@@ -8,6 +8,7 @@ import hexlet.code.app.dto.TaskToUpdateDto;
 import hexlet.code.app.model.Task;
 import hexlet.code.app.model.TaskStatus;
 import hexlet.code.app.model.User;
+import hexlet.code.app.model.Label;
 import hexlet.code.app.repository.TaskRepository;
 import hexlet.code.app.repository.TaskStatusRepository;
 import hexlet.code.app.repository.UserRepository;
@@ -72,7 +73,8 @@ public class TaskControllerIT {
                 userRepository.findAll().get(0).getId(),
                 taskStatusRepository.findAll().get(0).getId(),
                 utils.getFirstTaskName(),
-                utils.getFirstTaskDescription()
+                utils.getFirstTaskDescription(),
+                null
         );
         final User createdUser = userRepository.findAll().get(0);
         final TaskStatus createdTaskStatus = taskStatusRepository.findAll().get(0);
@@ -110,7 +112,8 @@ public class TaskControllerIT {
                 userRepository.findAll().get(0).getId(),
                 taskStatusRepository.findAll().get(0).getId(),
                 utils.getFirstTaskName(),
-                utils.getFirstTaskDescription()
+                utils.getFirstTaskDescription(),
+                null
         );
 
         utils.perform(post(TASK_CONTROLLER_PATH)
@@ -146,7 +149,8 @@ public class TaskControllerIT {
                 userRepository.findAll().get(0).getId(),
                 taskStatusRepository.findAll().get(0).getId(),
                 utils.getFirstTaskName(),
-                utils.getFirstTaskDescription()
+                utils.getFirstTaskDescription(),
+                null
         );
 
         utils.perform(post(TASK_CONTROLLER_PATH)
@@ -172,13 +176,15 @@ public class TaskControllerIT {
                 userRepository.findAll().get(0).getId(),
                 taskStatusRepository.findAll().get(0).getId(),
                 utils.getFirstTaskName(),
-                utils.getFirstTaskDescription()
+                utils.getFirstTaskDescription(),
+                null
         );
         final TaskToUpdateDto testSecondTaskDto = new TaskToUpdateDto(
                 this.userRepository.findAll().get(1).getId(),
                 this.taskStatusRepository.findAll().get(0).getId(),
                 utils.getSecondTaskName(),
-                utils.getSecondTaskDescription()
+                utils.getSecondTaskDescription(),
+                null
         );
 
         utils.perform(post(TASK_CONTROLLER_PATH)
@@ -218,7 +224,8 @@ public class TaskControllerIT {
                 userRepository.findAll().get(0).getId(),
                 taskStatusRepository.findAll().get(0).getId(),
                 utils.getFirstTaskName(),
-                utils.getFirstTaskDescription()
+                utils.getFirstTaskDescription(),
+                null
         );
 
         utils.perform(post(TASK_CONTROLLER_PATH)

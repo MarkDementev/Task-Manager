@@ -1,11 +1,15 @@
 package hexlet.code.app.dto;
 
+import hexlet.code.app.model.Label;
+
 import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.NotNull;
 
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
+
+import java.util.List;
 
 @Data
 @NoArgsConstructor
@@ -23,4 +27,6 @@ public class TaskDto {
     private String name;
 
     private String description;
+
+    private List<Label> labels;
 }

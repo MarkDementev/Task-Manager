@@ -1,6 +1,6 @@
 databaseChangeLog:
 - changeSet:
-    id: 1688751524914-1
+    id: 1689005996438-1
     author: mark_dementev (generated)
     changes:
     - createTable:
@@ -21,7 +21,7 @@ databaseChangeLog:
             type: VARCHAR(255)
         tableName: labels
 - changeSet:
-    id: 1688751524914-2
+    id: 1689005996438-2
     author: mark_dementev (generated)
     changes:
     - createTable:
@@ -42,7 +42,7 @@ databaseChangeLog:
             type: VARCHAR(255)
         tableName: task_statuses
 - changeSet:
-    id: 1688751524914-3
+    id: 1689005996438-3
     author: mark_dementev (generated)
     changes:
     - createTable:
@@ -75,7 +75,24 @@ databaseChangeLog:
             type: BIGINT
         tableName: tasks
 - changeSet:
-    id: 1688751524914-4
+    id: 1689005996438-4
+    author: mark_dementev (generated)
+    changes:
+    - createTable:
+        columns:
+        - column:
+            constraints:
+              nullable: false
+            name: task_id
+            type: BIGINT
+        - column:
+            constraints:
+              nullable: false
+            name: labels_id
+            type: BIGINT
+        tableName: tasks_labels
+- changeSet:
+    id: 1689005996438-5
     author: mark_dementev (generated)
     changes:
     - createTable:
@@ -105,7 +122,20 @@ databaseChangeLog:
             type: VARCHAR(255)
         tableName: users
 - changeSet:
-    id: 1688751524914-5
+    id: 1689005996438-6
+    author: mark_dementev (generated)
+    changes:
+    - addForeignKeyConstraint:
+        baseColumnNames: labels_id
+        baseTableName: tasks_labels
+        constraintName: FK1jqo1eikgg8xnhi58yp81b8nl
+        deferrable: false
+        initiallyDeferred: false
+        referencedColumnNames: id
+        referencedTableName: labels
+        validate: true
+- changeSet:
+    id: 1689005996438-7
     author: mark_dementev (generated)
     changes:
     - addForeignKeyConstraint:
@@ -118,7 +148,20 @@ databaseChangeLog:
         referencedTableName: task_statuses
         validate: true
 - changeSet:
-    id: 1688751524914-6
+    id: 1689005996438-8
+    author: mark_dementev (generated)
+    changes:
+    - addForeignKeyConstraint:
+        baseColumnNames: task_id
+        baseTableName: tasks_labels
+        constraintName: FK9qrs86gyw7ctgqiwqvr9jkf0l
+        deferrable: false
+        initiallyDeferred: false
+        referencedColumnNames: id
+        referencedTableName: tasks
+        validate: true
+- changeSet:
+    id: 1689005996438-9
     author: mark_dementev (generated)
     changes:
     - addForeignKeyConstraint:
@@ -131,7 +174,7 @@ databaseChangeLog:
         referencedTableName: users
         validate: true
 - changeSet:
-    id: 1688751524914-7
+    id: 1689005996438-10
     author: mark_dementev (generated)
     changes:
     - addForeignKeyConstraint:
