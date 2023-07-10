@@ -8,7 +8,6 @@ import hexlet.code.app.dto.TaskToUpdateDto;
 import hexlet.code.app.model.Task;
 import hexlet.code.app.model.TaskStatus;
 import hexlet.code.app.model.User;
-import hexlet.code.app.model.Label;
 import hexlet.code.app.repository.TaskRepository;
 import hexlet.code.app.repository.TaskStatusRepository;
 import hexlet.code.app.repository.UserRepository;
