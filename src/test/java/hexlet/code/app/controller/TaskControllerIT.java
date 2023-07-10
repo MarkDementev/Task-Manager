@@ -34,6 +34,7 @@ import static hexlet.code.app.utils.TestUtils.fromJson;
 import static org.assertj.core.api.Assertions.assertThat;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertNotNull;
 
 import static org.springframework.boot.test.context.SpringBootTest.WebEnvironment.RANDOM_PORT;
 import static org.springframework.http.MediaType.APPLICATION_JSON;
@@ -70,8 +71,8 @@ public class TaskControllerIT {
                 userRepository.findAll().get(0).getId(),
                 userRepository.findAll().get(0).getId(),
                 taskStatusRepository.findAll().get(0).getId(),
-                "Новая задача",
-                "Описание новой задачи"
+                utils.getFirstTaskName(),
+                utils.getFirstTaskDescription()
         );
         final User createdUser = userRepository.findAll().get(0);
         final TaskStatus createdTaskStatus = taskStatusRepository.findAll().get(0);
@@ -79,24 +80,25 @@ public class TaskControllerIT {
         final var response = utils.perform(
                         post(TASK_CONTROLLER_PATH).content(asJson(taskDto))
                                 .contentType(APPLICATION_JSON),
-                        "email@email.com"
+                        utils.getUserDto().getEmail()
                 )
                 .andExpect(status().isCreated())
                 .andReturn()
                 .getResponse();
 
-        response.setContentType("application/json;charset=UTF-8");
+        response.setContentType(utils.getUTFHeader());
 
-        final Task createdTasks = fromJson(response.getContentAsString(), new TypeReference<>() {
+        final Task taskFromResponse = fromJson(response.getContentAsString(), new TypeReference<>() {
         });
         final List<Task> allCreatedTasks = taskRepository.findAll();
 
         assertThat(allCreatedTasks).hasSize(1);
-        assertEquals(createdTasks.getAuthor().getId(), createdUser.getId());
-        assertEquals(createdTasks.getExecutor().getId(), createdUser.getId());
-        assertEquals(createdTasks.getTaskStatus().getId(), createdTaskStatus.getId());
-        assertEquals(createdTasks.getName(), "Новая задача");
-        assertEquals(createdTasks.getDescription(), "Описание новой задачи");
+        assertEquals(taskFromResponse.getAuthor().getId(), createdUser.getId());
+        assertEquals(taskFromResponse.getExecutor().getId(), createdUser.getId());
+        assertEquals(taskFromResponse.getTaskStatus().getId(), createdTaskStatus.getId());
+        assertEquals(taskFromResponse.getName(), utils.getFirstTaskName());
+        assertEquals(taskFromResponse.getDescription(), utils.getFirstTaskDescription());
+        assertNotNull(taskFromResponse.getCreatedAt());
     }
 
     @Test
@@ -107,12 +109,12 @@ public class TaskControllerIT {
                 userRepository.findAll().get(0).getId(),
                 userRepository.findAll().get(0).getId(),
                 taskStatusRepository.findAll().get(0).getId(),
-                "Новая задача",
-                "Описание новой задачи"
+                utils.getFirstTaskName(),
+                utils.getFirstTaskDescription()
         );
 
         utils.perform(post(TASK_CONTROLLER_PATH)
-                .content(asJson(taskDto)).contentType(APPLICATION_JSON), "email@email.com");
+                .content(asJson(taskDto)).contentType(APPLICATION_JSON), utils.getUserDto().getEmail());
 
         final Task expectedTask = taskRepository.findAll().get(0);
         final var response = utils.perform(
@@ -121,17 +123,18 @@ public class TaskControllerIT {
                 .andReturn()
                 .getResponse();
 
-        response.setContentType("application/json;charset=UTF-8");
+        response.setContentType(utils.getUTFHeader());
 
-        final Task task = fromJson(response.getContentAsString(), new TypeReference<>() {
+        final Task taskFromResponse = fromJson(response.getContentAsString(), new TypeReference<>() {
         });
 
-        assertEquals(expectedTask.getId(), task.getId());
-        assertEquals(expectedTask.getAuthor().getId(), task.getAuthor().getId());
-        assertEquals(expectedTask.getExecutor().getId(), task.getExecutor().getId());
-        assertEquals(expectedTask.getTaskStatus().getId(), task.getTaskStatus().getId());
-        assertEquals(expectedTask.getName(), task.getName());
-        assertEquals(expectedTask.getDescription(), task.getDescription());
+        assertEquals(expectedTask.getId(), taskFromResponse.getId());
+        assertEquals(expectedTask.getAuthor().getId(), taskFromResponse.getAuthor().getId());
+        assertEquals(expectedTask.getExecutor().getId(), taskFromResponse.getExecutor().getId());
+        assertEquals(expectedTask.getTaskStatus().getId(), taskFromResponse.getTaskStatus().getId());
+        assertEquals(expectedTask.getName(), taskFromResponse.getName());
+        assertEquals(expectedTask.getDescription(), taskFromResponse.getDescription());
+        assertNotNull(taskFromResponse.getCreatedAt());
     }
 
     @Test
@@ -142,21 +145,21 @@ public class TaskControllerIT {
                 userRepository.findAll().get(0).getId(),
                 userRepository.findAll().get(0).getId(),
                 taskStatusRepository.findAll().get(0).getId(),
-                "Новая задача",
-                "Описание новой задачи"
+                utils.getFirstTaskName(),
+                utils.getFirstTaskDescription()
         );
 
         utils.perform(post(TASK_CONTROLLER_PATH)
-                .content(asJson(taskDto)).contentType(APPLICATION_JSON), "email@email.com");
+                .content(asJson(taskDto)).contentType(APPLICATION_JSON), utils.getUserDto().getEmail());
 
         final var response = utils.perform(get(TASK_CONTROLLER_PATH))
                 .andExpect(status().isOk())
                 .andReturn()
                 .getResponse();
-        final List<Task> tasks = fromJson(response.getContentAsString(), new TypeReference<>() {
+        final List<Task> tasksFromResponse = fromJson(response.getContentAsString(), new TypeReference<>() {
         });
 
-        assertThat(tasks).hasSize(1);
+        assertThat(tasksFromResponse).hasSize(1);
     }
 
     @Test
@@ -168,40 +171,42 @@ public class TaskControllerIT {
                 userRepository.findAll().get(0).getId(),
                 userRepository.findAll().get(0).getId(),
                 taskStatusRepository.findAll().get(0).getId(),
-                "Новая задача",
-                "Описание новой задачи"
+                utils.getFirstTaskName(),
+                utils.getFirstTaskDescription()
         );
         final TaskToUpdateDto testSecondTaskDto = new TaskToUpdateDto(
                 this.userRepository.findAll().get(1).getId(),
                 this.taskStatusRepository.findAll().get(0).getId(),
-                "Новое имя",
-                "Новое описание"
+                utils.getSecondTaskName(),
+                utils.getSecondTaskDescription()
         );
 
         utils.perform(post(TASK_CONTROLLER_PATH)
-                .content(asJson(taskDto)).contentType(APPLICATION_JSON), "email@email.com");
+                .content(asJson(taskDto)).contentType(APPLICATION_JSON), utils.getUserDto().getEmail());
 
         Long createdTaskId = taskRepository.findAll().get(0).getId();
         final var response = utils.perform(put(TASK_CONTROLLER_PATH + ID, createdTaskId)
                                 .content(asJson(testSecondTaskDto)).contentType(APPLICATION_JSON),
-                        "email@email.com"
+                        utils.getUserDto().getEmail()
                 )
                 .andExpect(status().isOk())
                 .andReturn()
                 .getResponse();
 
-        response.setContentType("application/json;charset=UTF-8");
+        response.setContentType(utils.getUTFHeader());
 
-        final Task task = fromJson(response.getContentAsString(), new TypeReference<>() {
+        final Task taskFromResponse = fromJson(response.getContentAsString(), new TypeReference<>() {
         });
         final List<Task> allTasks = taskRepository.findAll();
 
         assertThat(allTasks).hasSize(1);
-        assertEquals(task.getAuthor().getEmail(), "email@email.com");
-        assertEquals(task.getExecutor().getEmail(), "UPDATEDemail@email.com");
-        assertEquals(task.getTaskStatus().getName(), "Новый");
-        assertEquals(task.getName(), "Новое имя");
-        assertEquals(task.getDescription(), "Новое описание");
+        assertNotNull(taskFromResponse.getId());
+        assertEquals(taskFromResponse.getAuthor().getEmail(), utils.getUserDto().getEmail());
+        assertEquals(taskFromResponse.getExecutor().getEmail(), utils.getSecondUserDto().getEmail());
+        assertEquals(taskFromResponse.getTaskStatus().getName(), utils.getTaskStatusDto().getName());
+        assertEquals(taskFromResponse.getName(), utils.getSecondTaskName());
+        assertEquals(taskFromResponse.getDescription(), utils.getSecondTaskDescription());
+        assertNotNull(taskFromResponse.getCreatedAt());
     }
 
     @Test
@@ -212,17 +217,17 @@ public class TaskControllerIT {
                 userRepository.findAll().get(0).getId(),
                 userRepository.findAll().get(0).getId(),
                 taskStatusRepository.findAll().get(0).getId(),
-                "Новая задача",
-                "Описание новой задачи"
+                utils.getFirstTaskName(),
+                utils.getFirstTaskDescription()
         );
 
         utils.perform(post(TASK_CONTROLLER_PATH)
-                .content(asJson(taskDto)).contentType(APPLICATION_JSON), "email@email.com");
+                .content(asJson(taskDto)).contentType(APPLICATION_JSON), utils.getUserDto().getEmail());
 
         Long createdTaskId = taskRepository.findAll().get(0).getId();
 
         utils.perform(delete(TASK_CONTROLLER_PATH + ID, createdTaskId),
-                        "email@email.com")
+                        utils.getUserDto().getEmail())
                 .andExpect(status().isOk())
                 .andReturn()
                 .getResponse();

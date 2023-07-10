@@ -36,6 +36,7 @@ import static org.springframework.test.web.servlet.request.MockMvcRequestBuilder
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertNotNull;
 
 import static org.assertj.core.api.Assertions.assertThat;
 
@@ -63,13 +64,15 @@ public class UserControllerIT {
                 .andReturn()
                 .getResponse();
         final List<User> allCreatedUsers = userRepository.findAll();
-        final User createdUser = fromJson(response.getContentAsString(), new TypeReference<>() {
+        final User userFromResponse = fromJson(response.getContentAsString(), new TypeReference<>() {
         });
 
         assertThat(allCreatedUsers).hasSize(1);
-        assertEquals(createdUser.getEmail(), "email@email.com");
-        assertEquals(createdUser.getFirstName(), "fname");
-        assertEquals(createdUser.getLastName(), "lname");
+        assertNotNull(userFromResponse.getId());
+        assertEquals(userFromResponse.getEmail(), utils.getUserDto().getEmail());
+        assertEquals(userFromResponse.getFirstName(), utils.getUserDto().getFirstName());
+        assertEquals(userFromResponse.getLastName(), utils.getUserDto().getLastName());
+        assertNotNull(userFromResponse.getCreatedAt());
     }
 
     @Test
@@ -83,13 +86,14 @@ public class UserControllerIT {
                 ).andExpect(status().isOk())
                 .andReturn()
                 .getResponse();
-        final User user = fromJson(response.getContentAsString(), new TypeReference<>() {
+        final User userFromResponse = fromJson(response.getContentAsString(), new TypeReference<>() {
         });
 
-        assertEquals(expectedUser.getId(), user.getId());
-        assertEquals(expectedUser.getEmail(), user.getEmail());
-        assertEquals(expectedUser.getFirstName(), user.getFirstName());
-        assertEquals(expectedUser.getLastName(), user.getLastName());
+        assertEquals(expectedUser.getId(), userFromResponse.getId());
+        assertEquals(expectedUser.getEmail(), userFromResponse.getEmail());
+        assertEquals(expectedUser.getFirstName(), userFromResponse.getFirstName());
+        assertEquals(expectedUser.getLastName(), userFromResponse.getLastName());
+        assertNotNull(userFromResponse.getCreatedAt());
     }
 
     @Test
@@ -100,10 +104,10 @@ public class UserControllerIT {
                 .andExpect(status().isOk())
                 .andReturn()
                 .getResponse();
-        final List<User> users = fromJson(response.getContentAsString(), new TypeReference<>() {
+        final List<User> allUsers = fromJson(response.getContentAsString(), new TypeReference<>() {
         });
 
-        assertThat(users).hasSize(1);
+        assertThat(allUsers).hasSize(1);
     }
 
     @Test
@@ -113,19 +117,20 @@ public class UserControllerIT {
         Long createdUserId = userRepository.findAll().get(0).getId();
         final var response = utils.perform(put(USER_CONTROLLER_PATH + ID, createdUserId)
                         .content(asJson(utils.getSecondUserDto())).contentType(APPLICATION_JSON),
-                        "email@email.com")
+                        utils.getUserDto().getEmail())
                 .andExpect(status().isOk())
                 .andReturn()
                 .getResponse();
-        final User user = fromJson(response.getContentAsString(), new TypeReference<>() {
+        final User userFromResponse = fromJson(response.getContentAsString(), new TypeReference<>() {
         });
         final List<User> allUsers = userRepository.findAll();
 
         assertThat(allUsers).hasSize(1);
-        assertEquals(user.getId(), createdUserId);
-        assertEquals(user.getEmail(), "UPDATEDemail@email.com");
-        assertEquals(user.getFirstName(), "UPDATEDfname");
-        assertEquals(user.getLastName(), "UPDATEDlname");
+        assertEquals(userFromResponse.getId(), createdUserId);
+        assertEquals(userFromResponse.getEmail(), utils.getSecondUserDto().getEmail());
+        assertEquals(userFromResponse.getFirstName(), utils.getSecondUserDto().getFirstName());
+        assertEquals(userFromResponse.getLastName(), utils.getSecondUserDto().getLastName());
+        assertNotNull(userFromResponse.getCreatedAt());
     }
 
     @Test
@@ -135,7 +140,7 @@ public class UserControllerIT {
         Long createdUserId = userRepository.findAll().get(0).getId();
 
         utils.perform(delete(USER_CONTROLLER_PATH + ID, createdUserId),
-                        "email@email.com")
+                        utils.getUserDto().getEmail())
                 .andExpect(status().isOk())
                 .andReturn()
                 .getResponse();
@@ -148,9 +153,8 @@ public class UserControllerIT {
     @Test
     public void loginTest() throws Exception {
         utils.createDefaultUser();
-
-        final var loginRequest = post(LOGIN).content(asJson(utils.getLoginDto())).contentType(APPLICATION_JSON);
-
-        utils.perform(loginRequest).andExpect(status().isOk());
+        utils.perform(
+                post(LOGIN).content(asJson(utils.getLoginDto())).contentType(APPLICATION_JSON)
+        ).andExpect(status().isOk());
     }
 }

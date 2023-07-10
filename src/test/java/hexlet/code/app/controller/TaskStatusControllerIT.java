@@ -28,6 +28,7 @@ import static hexlet.code.app.utils.TestUtils.fromJson;
 import static org.assertj.core.api.Assertions.assertThat;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertNotNull;
 
 import static org.springframework.boot.test.context.SpringBootTest.WebEnvironment.RANDOM_PORT;
 import static org.springframework.http.MediaType.APPLICATION_JSON;
@@ -59,20 +60,22 @@ public class TaskStatusControllerIT {
         final var response = utils.perform(
                         post(TASK_STATUS_CONTROLLER_PATH).content(asJson(utils.getTaskStatusDto()))
                                 .contentType(APPLICATION_JSON),
-                        "email@email.com"
+                        utils.getUserDto().getEmail()
                 )
                 .andExpect(status().isCreated())
                 .andReturn()
                 .getResponse();
 
-        response.setContentType("application/json;charset=UTF-8");
+        response.setContentType(utils.getUTFHeader());
 
         final List<TaskStatus> allCreatedTaskStatuses = taskStatusRepository.findAll();
         final TaskStatus createdTaskStatus = fromJson(response.getContentAsString(), new TypeReference<>() {
         });
 
         assertThat(allCreatedTaskStatuses).hasSize(1);
-        assertEquals(createdTaskStatus.getName(), "Новый");
+        assertNotNull(createdTaskStatus.getId());
+        assertEquals(createdTaskStatus.getName(), utils.getTaskStatusDto().getName());
+        assertNotNull(createdTaskStatus.getCreatedAt());
     }
 
     @Test
@@ -86,13 +89,14 @@ public class TaskStatusControllerIT {
                 .andReturn()
                 .getResponse();
 
-        response.setContentType("application/json;charset=UTF-8");
+        response.setContentType(utils.getUTFHeader());
 
-        final TaskStatus taskStatus = fromJson(response.getContentAsString(), new TypeReference<>() {
+        final TaskStatus createdTaskStatus = fromJson(response.getContentAsString(), new TypeReference<>() {
         });
 
-        assertEquals(expectedTaskStatus.getId(), taskStatus.getId());
-        assertEquals(expectedTaskStatus.getName(), taskStatus.getName());
+        assertEquals(expectedTaskStatus.getId(), createdTaskStatus.getId());
+        assertEquals(expectedTaskStatus.getName(), createdTaskStatus.getName());
+        assertNotNull(createdTaskStatus.getCreatedAt());
     }
 
     @Test
@@ -116,21 +120,22 @@ public class TaskStatusControllerIT {
         Long createdTaskStatusId = taskStatusRepository.findAll().get(0).getId();
         final var response = utils.perform(put(TASK_STATUS_CONTROLLER_PATH + ID, createdTaskStatusId)
                                 .content(asJson(utils.getSecondTaskStatusDto())).contentType(APPLICATION_JSON),
-                                "email@email.com"
+                                utils.getUserDto().getEmail()
                 )
                 .andExpect(status().isOk())
                 .andReturn()
                 .getResponse();
 
-        response.setContentType("application/json;charset=UTF-8");
+        response.setContentType(utils.getUTFHeader());
 
-        final TaskStatus taskStatus = fromJson(response.getContentAsString(), new TypeReference<>() {
+        final TaskStatus taskStatusFromResponse = fromJson(response.getContentAsString(), new TypeReference<>() {
         });
         final List<TaskStatus> allTaskStatuses = taskStatusRepository.findAll();
 
         assertThat(allTaskStatuses).hasSize(1);
-        assertEquals(taskStatus.getId(), createdTaskStatusId);
-        assertEquals(taskStatus.getName(), "В работе");
+        assertEquals(taskStatusFromResponse.getId(), createdTaskStatusId);
+        assertEquals(taskStatusFromResponse.getName(), utils.getSecondTaskStatusDto().getName());
+        assertNotNull(taskStatusFromResponse.getCreatedAt());
     }
 
     @Test
@@ -140,7 +145,7 @@ public class TaskStatusControllerIT {
         Long createdTaskStatusId = taskStatusRepository.findAll().get(0).getId();
 
         utils.perform(delete(TASK_STATUS_CONTROLLER_PATH + ID, createdTaskStatusId),
-                        "email@email.com")
+                        utils.getUserDto().getEmail())
                 .andExpect(status().isOk())
                 .andReturn()
                 .getResponse();

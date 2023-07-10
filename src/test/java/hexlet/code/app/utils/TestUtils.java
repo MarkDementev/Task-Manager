@@ -47,6 +47,39 @@ public class TestUtils {
     @Autowired
     private JWTHelper jwtHelper;
     private static final ObjectMapper MAPPER = new ObjectMapper().findAndRegisterModules();
+    private static final String UTF_HEADER = "application/json;charset=UTF-8";
+    private static final String FIRST_TASK_NAME = "Новая задача";
+    private static final String FIRST_TASK_DESCRIPTION = "Описание новой задачи";
+    private static final String SECOND_TASK_NAME = "Новое имя";
+    private static final String SECOND_TASK_DESCRIPTION = "Новое описание";
+    private final UserDto userDto = new UserDto(
+            "email@email.com",
+            "fname",
+            "lname",
+            "pwd"
+    );
+    private final UserDto secondUserDto = new UserDto(
+            "UPDATEDemail@email.com",
+            "UPDATEDfname",
+            "UPDATEDlname",
+            "UPDATEDpwd"
+    );
+    private final LoginDto loginDto = new LoginDto(
+            getUserDto().getEmail(),
+            getUserDto().getPassword()
+    );
+    private final TaskStatusDto taskStatusDto = new TaskStatusDto(
+            "Новый"
+    );
+    private final TaskStatusDto secondTaskStatusDto = new TaskStatusDto(
+            "В работе"
+    );
+    private final LabelDto labelDto = new LabelDto(
+            "Новая метка"
+    );
+    private final LabelDto secondLabelDto = new LabelDto(
+            "Баг"
+    );
 
     public void tearDown() {
         taskRepository.deleteAll();
@@ -55,40 +88,25 @@ public class TestUtils {
         userRepository.deleteAll();
     }
 
-    private final UserDto userDto = new UserDto(
-            "email@email.com",
-            "fname",
-            "lname",
-            "pwd"
-    );
+    public String getUTFHeader() {
+        return UTF_HEADER;
+    }
 
-    private final UserDto secondUserDto = new UserDto(
-            "UPDATEDemail@email.com",
-            "UPDATEDfname",
-            "UPDATEDlname",
-            "UPDATEDpwd"
-    );
+    public String getFirstTaskName() {
+        return FIRST_TASK_NAME;
+    }
 
-    private final LoginDto loginDto = new LoginDto(
-            getUserDto().getEmail(),
-            getUserDto().getPassword()
-    );
+    public String getFirstTaskDescription() {
+        return FIRST_TASK_DESCRIPTION;
+    }
 
-    private final TaskStatusDto taskStatusDto = new TaskStatusDto(
-            "Новый"
-    );
+    public String getSecondTaskName() {
+        return SECOND_TASK_NAME;
+    }
 
-    private final TaskStatusDto secondTaskStatusDto = new TaskStatusDto(
-            "В работе"
-    );
-
-    private final LabelDto labelDto = new LabelDto(
-            "Новая метка"
-    );
-
-    private final LabelDto secondLabelDto = new LabelDto(
-            "Баг"
-    );
+    public String getSecondTaskDescription() {
+        return SECOND_TASK_DESCRIPTION;
+    }
 
     public UserDto getUserDto() {
         return userDto;

@@ -27,6 +27,7 @@ import static hexlet.code.app.utils.TestUtils.fromJson;
 import static org.assertj.core.api.Assertions.assertThat;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertNotNull;
 
 import static org.springframework.boot.test.context.SpringBootTest.WebEnvironment.RANDOM_PORT;
 import static org.springframework.http.MediaType.APPLICATION_JSON;
@@ -67,14 +68,15 @@ public class LabelControllerIT {
                 .andReturn()
                 .getResponse();
 
-                response.setContentType("application/json;charset=UTF-8");
+        response.setContentType(utils.getUTFHeader());
 
-        final Label createdLabel = fromJson(response.getContentAsString(), new TypeReference<>() {
+        final Label labelFromResponse = fromJson(response.getContentAsString(), new TypeReference<>() {
         });
         final List<Label> allCreatedLabels = labelRepository.findAll();
 
         assertThat(allCreatedLabels).hasSize(1);
-        assertEquals(createdLabel.getName(), utils.getLabelDto().getName());
+        assertEquals(labelFromResponse.getName(), utils.getLabelDto().getName());
+        assertNotNull(labelFromResponse.getCreatedAt());
     }
 
     @Test
@@ -89,13 +91,14 @@ public class LabelControllerIT {
                 .andReturn()
                 .getResponse();
 
-                response.setContentType("application/json;charset=UTF-8");
+        response.setContentType(utils.getUTFHeader());
 
-        final Label label = fromJson(response.getContentAsString(), new TypeReference<>() {
+        final Label labelFromResponse = fromJson(response.getContentAsString(), new TypeReference<>() {
         });
 
-        assertEquals(expectedLabel.getId(), label.getId());
-        assertEquals(expectedLabel.getName(), label.getName());
+        assertEquals(expectedLabel.getId(), labelFromResponse.getId());
+        assertEquals(expectedLabel.getName(), labelFromResponse.getName());
+        assertNotNull(labelFromResponse.getCreatedAt());
     }
 
     @Test
@@ -108,13 +111,10 @@ public class LabelControllerIT {
                 ).andExpect(status().isOk())
                 .andReturn()
                 .getResponse();
-
-        //        response.setContentType("application/json;charset=UTF-8");
-
-        final List<Label> labels = fromJson(response.getContentAsString(), new TypeReference<>() {
+        final List<Label> labelsFromResponse = fromJson(response.getContentAsString(), new TypeReference<>() {
         });
 
-        assertThat(labels).hasSize(1);
+        assertThat(labelsFromResponse).hasSize(1);
     }
 
     @Test
@@ -129,15 +129,16 @@ public class LabelControllerIT {
                 .andReturn()
                 .getResponse();
 
-        response.setContentType("application/json;charset=UTF-8");
+        response.setContentType(utils.getUTFHeader());
 
-        final Label label = fromJson(response.getContentAsString(), new TypeReference<>() {
+        final Label labelFromResponse = fromJson(response.getContentAsString(), new TypeReference<>() {
         });
         final List<Label> allLabels = labelRepository.findAll();
 
         assertThat(allLabels).hasSize(1);
-        assertEquals(label.getId(), createdLabelId);
-        assertEquals(label.getName(), utils.getSecondLabelDto().getName());
+        assertEquals(labelFromResponse.getId(), createdLabelId);
+        assertEquals(labelFromResponse.getName(), utils.getSecondLabelDto().getName());
+        assertNotNull(labelFromResponse.getCreatedAt());
     }
 
     @Test
