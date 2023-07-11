@@ -5,12 +5,14 @@ import com.fasterxml.jackson.core.type.TypeReference;
 import hexlet.code.app.config.SpringConfigForIT;
 import hexlet.code.app.dto.TaskDto;
 import hexlet.code.app.dto.TaskToUpdateDto;
+import hexlet.code.app.model.Label;
 import hexlet.code.app.model.Task;
 import hexlet.code.app.model.TaskStatus;
 import hexlet.code.app.model.User;
 import hexlet.code.app.repository.TaskRepository;
 import hexlet.code.app.repository.TaskStatusRepository;
 import hexlet.code.app.repository.UserRepository;
+import hexlet.code.app.repository.LabelRepository;
 import hexlet.code.app.utils.TestUtils;
 
 import org.junit.jupiter.api.AfterEach;
@@ -52,6 +54,8 @@ public class TaskControllerIT {
     @Autowired
     private TaskRepository taskRepository;
     @Autowired
+    private LabelRepository labelRepository;
+    @Autowired
     private TaskStatusRepository taskStatusRepository;
     @Autowired
     private UserRepository userRepository;
@@ -71,9 +75,9 @@ public class TaskControllerIT {
                 userRepository.findAll().get(0).getId(),
                 userRepository.findAll().get(0).getId(),
                 taskStatusRepository.findAll().get(0).getId(),
+                null,
                 utils.getFirstTaskName(),
-                utils.getFirstTaskDescription(),
-                null
+                utils.getFirstTaskDescription()
         );
         final User createdUser = userRepository.findAll().get(0);
         final TaskStatus createdTaskStatus = taskStatusRepository.findAll().get(0);
@@ -110,9 +114,9 @@ public class TaskControllerIT {
                 userRepository.findAll().get(0).getId(),
                 userRepository.findAll().get(0).getId(),
                 taskStatusRepository.findAll().get(0).getId(),
+                null,
                 utils.getFirstTaskName(),
-                utils.getFirstTaskDescription(),
-                null
+                utils.getFirstTaskDescription()
         );
 
         utils.perform(post(TASK_CONTROLLER_PATH)
@@ -147,9 +151,9 @@ public class TaskControllerIT {
                 userRepository.findAll().get(0).getId(),
                 userRepository.findAll().get(0).getId(),
                 taskStatusRepository.findAll().get(0).getId(),
+                null,
                 utils.getFirstTaskName(),
-                utils.getFirstTaskDescription(),
-                null
+                utils.getFirstTaskDescription()
         );
 
         utils.perform(post(TASK_CONTROLLER_PATH)
@@ -174,16 +178,16 @@ public class TaskControllerIT {
                 userRepository.findAll().get(0).getId(),
                 userRepository.findAll().get(0).getId(),
                 taskStatusRepository.findAll().get(0).getId(),
+                null,
                 utils.getFirstTaskName(),
-                utils.getFirstTaskDescription(),
-                null
+                utils.getFirstTaskDescription()
         );
         final TaskToUpdateDto testSecondTaskDto = new TaskToUpdateDto(
                 this.userRepository.findAll().get(1).getId(),
                 this.taskStatusRepository.findAll().get(0).getId(),
+                null,
                 utils.getSecondTaskName(),
-                utils.getSecondTaskDescription(),
-                null
+                utils.getSecondTaskDescription()
         );
 
         utils.perform(post(TASK_CONTROLLER_PATH)
@@ -222,9 +226,9 @@ public class TaskControllerIT {
                 userRepository.findAll().get(0).getId(),
                 userRepository.findAll().get(0).getId(),
                 taskStatusRepository.findAll().get(0).getId(),
+                null,
                 utils.getFirstTaskName(),
-                utils.getFirstTaskDescription(),
-                null
+                utils.getFirstTaskDescription()
         );
 
         utils.perform(post(TASK_CONTROLLER_PATH)
@@ -241,5 +245,98 @@ public class TaskControllerIT {
         final List<Task> allTasks = taskRepository.findAll();
 
         assertThat(allTasks).hasSize(0);
+    }
+
+    @Test
+    public void createTaskWithLabelsTest() throws Exception {
+        utils.createDefaultUserLoginTaskStatus();
+        utils.createLabel(utils.getLabelDto(), utils.getLoginDto());
+
+        final TaskDto taskDto = new TaskDto(
+                userRepository.findAll().get(0).getId(),
+                userRepository.findAll().get(0).getId(),
+                taskStatusRepository.findAll().get(0).getId(),
+                List.of(labelRepository.findAll().get(0).getId()),
+                utils.getFirstTaskName(),
+                utils.getFirstTaskDescription()
+        );
+        final User createdUser = userRepository.findAll().get(0);
+        final TaskStatus createdTaskStatus = taskStatusRepository.findAll().get(0);
+        final Label createdLabel = labelRepository.findAll().get(0);
+        final var response = utils.perform(
+                        post(TASK_CONTROLLER_PATH).content(asJson(taskDto))
+                                .contentType(APPLICATION_JSON),
+                        utils.getUserDto().getEmail()
+                )
+                .andExpect(status().isCreated())
+                .andReturn()
+                .getResponse();
+
+        response.setContentType(utils.getUTFHeader());
+
+        final Task taskFromResponse = fromJson(response.getContentAsString(), new TypeReference<>() {
+        });
+        final List<Task> allCreatedTasks = taskRepository.findAll();
+
+        assertThat(allCreatedTasks).hasSize(1);
+        assertEquals(taskFromResponse.getAuthor().getId(), createdUser.getId());
+        assertEquals(taskFromResponse.getExecutor().getId(), createdUser.getId());
+        assertEquals(taskFromResponse.getTaskStatus().getId(), createdTaskStatus.getId());
+        assertEquals(taskFromResponse.getLabels().get(0).getId(), createdLabel.getId());
+        assertEquals(taskFromResponse.getName(), utils.getFirstTaskName());
+        assertEquals(taskFromResponse.getDescription(), utils.getFirstTaskDescription());
+        assertNotNull(taskFromResponse.getCreatedAt());
+    }
+
+    @Test
+    public void updateTaskWithLabelsTest() throws Exception {
+        utils.createDefaultUserLoginTaskStatus();
+        utils.createSecondDefaultUser();
+        utils.createLabel(utils.getLabelDto(), utils.getLoginDto());
+
+        final TaskDto taskDto = new TaskDto(
+                userRepository.findAll().get(0).getId(),
+                userRepository.findAll().get(0).getId(),
+                taskStatusRepository.findAll().get(0).getId(),
+                null,
+                utils.getFirstTaskName(),
+                utils.getFirstTaskDescription()
+        );
+        final TaskToUpdateDto testSecondTaskDto = new TaskToUpdateDto(
+                this.userRepository.findAll().get(1).getId(),
+                this.taskStatusRepository.findAll().get(0).getId(),
+                List.of(labelRepository.findAll().get(0).getId()),
+                utils.getSecondTaskName(),
+                utils.getSecondTaskDescription()
+        );
+
+        utils.perform(post(TASK_CONTROLLER_PATH)
+                .content(asJson(taskDto)).contentType(APPLICATION_JSON), utils.getUserDto().getEmail());
+
+        Long createdTaskId = taskRepository.findAll().get(0).getId();
+        final Label createdLabel = labelRepository.findAll().get(0);
+        final var response = utils.perform(put(TASK_CONTROLLER_PATH + ID, createdTaskId)
+                                .content(asJson(testSecondTaskDto)).contentType(APPLICATION_JSON),
+                        utils.getUserDto().getEmail()
+                )
+                .andExpect(status().isOk())
+                .andReturn()
+                .getResponse();
+
+        response.setContentType(utils.getUTFHeader());
+
+        final Task taskFromResponse = fromJson(response.getContentAsString(), new TypeReference<>() {
+        });
+        final List<Task> allTasks = taskRepository.findAll();
+
+        assertThat(allTasks).hasSize(1);
+        assertNotNull(taskFromResponse.getId());
+        assertEquals(taskFromResponse.getAuthor().getEmail(), utils.getUserDto().getEmail());
+        assertEquals(taskFromResponse.getExecutor().getEmail(), utils.getSecondUserDto().getEmail());
+        assertEquals(taskFromResponse.getTaskStatus().getName(), utils.getTaskStatusDto().getName());
+        assertEquals(taskFromResponse.getLabels().get(0).getId(), createdLabel.getId());
+        assertEquals(taskFromResponse.getName(), utils.getSecondTaskName());
+        assertEquals(taskFromResponse.getDescription(), utils.getSecondTaskDescription());
+        assertNotNull(taskFromResponse.getCreatedAt());
     }
 }

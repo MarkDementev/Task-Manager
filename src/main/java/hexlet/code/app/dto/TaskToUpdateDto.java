@@ -1,7 +1,5 @@
 package hexlet.code.app.dto;
 
-import hexlet.code.app.model.Label;
-
 import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.NotNull;
 
@@ -20,10 +18,10 @@ public class TaskToUpdateDto {
     @NotNull
     private Long taskStatusId;
 
+    private List<Long> labelsId;
+
     @NotBlank
     private String name;
 
     private String description;
-
-    private List<Label> labels;
 }

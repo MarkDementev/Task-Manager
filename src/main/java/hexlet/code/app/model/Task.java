@@ -36,11 +36,6 @@ public class Task {
     @GeneratedValue(strategy = IDENTITY)
     private Long id;
 
-    @NotBlank
-    private String name;
-
-    private String description;
-
     @NotNull
     @ManyToOne
     private User author;
@@ -54,6 +49,11 @@ public class Task {
 
     @ManyToMany
     private List<Label> labels;
+
+    @NotBlank
+    private String name;
+
+    private String description;
 
     @CreationTimestamp
     @Temporal(TIMESTAMP)
