@@ -11,6 +11,8 @@ import lombok.AllArgsConstructor;
 import org.springframework.stereotype.Service;
 import org.springframework.security.crypto.password.PasswordEncoder;
 
+import java.util.List;
+
 @Service
 @Transactional
 @AllArgsConstructor
@@ -24,7 +26,7 @@ public class UserServiceImpl implements UserService {
     }
 
     @Override
-    public Iterable<User> getUsers() {
+    public List<User> getUsers() {
         return userRepository.findAll();
     }
 

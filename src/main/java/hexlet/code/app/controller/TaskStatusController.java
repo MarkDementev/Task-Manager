@@ -39,7 +39,7 @@ public class TaskStatusController {
 
     @GetMapping
     public List<TaskStatus> getTaskStatuses() {
-        return (List<TaskStatus>) taskStatusService.getTaskStatuses();
+        return taskStatusService.getTaskStatuses();
     }
 
     @PostMapping

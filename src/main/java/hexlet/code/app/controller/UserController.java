@@ -46,7 +46,7 @@ public class UserController {
 
     @GetMapping
     public List<User> getUsers() {
-        return (List<User>) userService.getUsers();
+        return userService.getUsers();
     }
 
     @PostMapping

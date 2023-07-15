@@ -39,7 +39,7 @@ public class LabelController {
 
     @GetMapping
     public List<Label> getLabels() {
-        return (List<Label>) labelService.getLabels();
+        return labelService.getLabels();
     }
 
     @PostMapping

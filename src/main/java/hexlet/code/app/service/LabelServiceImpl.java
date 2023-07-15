@@ -10,6 +10,8 @@ import lombok.AllArgsConstructor;
 
 import org.springframework.stereotype.Service;
 
+import java.util.List;
+
 @Service
 @Transactional
 @AllArgsConstructor
@@ -22,7 +24,7 @@ public class LabelServiceImpl implements LabelService {
     }
 
     @Override
-    public Iterable<Label> getLabels() {
+    public List<Label> getLabels() {
         return labelRepository.findAll();
     }
 

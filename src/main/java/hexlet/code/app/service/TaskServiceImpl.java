@@ -35,11 +35,6 @@ public class TaskServiceImpl implements TaskService {
     }
 
     @Override
-    public Iterable<Task> getTasks() {
-        return taskRepository.findAll();
-    }
-
-    @Override
     public Task createTask(TaskDto taskDto) {
         final Task newTask = new Task();
         User author = userRepository.findById(taskDto.getAuthorId()).get();
