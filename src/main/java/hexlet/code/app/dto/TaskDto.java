@@ -21,7 +21,7 @@ public class TaskDto {
     @NotNull
     private Long taskStatusId;
 
-    private List<Long> labels;
+    private List<Long> labelsId;
 
     @NotBlank
     private String name;
