@@ -340,46 +340,46 @@ public class TaskControllerIT {
         assertNotNull(taskFromResponse.getCreatedAt());
     }
 
-//    @Test
-//    public void getFilteredTasksTest() throws Exception {
-//        utils.createDefaultUserLoginTaskStatus();
-//        utils.createLabel(utils.getLabelDto(), utils.getLoginDto());
-//
-//        final TaskDto taskDto = new TaskDto(
-//                userRepository.findAll().get(0).getId(),
-//                userRepository.findAll().get(0).getId(),
-//                taskStatusRepository.findAll().get(0).getId(),
-//                List.of(labelRepository.findAll().get(0).getId()),
-//                utils.getFirstTaskName(),
-//                utils.getFirstTaskDescription()
-//        );
-//        final TaskDto secondTaskDto = new TaskDto(
-//                userRepository.findAll().get(0).getId(),
-//                userRepository.findAll().get(0).getId(),
-//                taskStatusRepository.findAll().get(0).getId(),
-//                List.of(labelRepository.findAll().get(0).getId()),
-//                utils.getSecondTaskName(),
-//                utils.getSecondTaskDescription()
-//        );
-//
-//        utils.perform(post(TASK_CONTROLLER_PATH)
-//                .content(asJson(taskDto)).contentType(APPLICATION_JSON), utils.getUserDto().getEmail());
-//        utils.perform(post(TASK_CONTROLLER_PATH)
-//                .content(asJson(secondTaskDto)).contentType(APPLICATION_JSON), utils.getUserDto().getEmail());
-//
-//        final var response = utils.perform(
-//                get(TASK_CONTROLLER_PATH)
-//                        .param("taskStatus", String.valueOf(taskStatusRepository.findAll().get(0).getId()))
-//                        .param("executorId", String.valueOf(userRepository.findAll().get(0).getId()))
-//                        .param("labels", String.valueOf(labelRepository.findAll().get(0).getId())),
-//                        utils.getUserDto().getEmail())
-//                .andExpect(status().isOk())
-//                .andReturn()
-//                .getResponse();
-//
-//        final List<Task> tasksFromResponse = fromJson(response.getContentAsString(), new TypeReference<>() {
-//        });
-//
-//        assertThat(tasksFromResponse).hasSize(1);
-//    }
+    @Test
+    public void getFilteredTasksTest() throws Exception {
+        utils.createDefaultUserLoginTaskStatus();
+        utils.createLabel(utils.getLabelDto(), utils.getLoginDto());
+
+        final TaskDto taskDto = new TaskDto(
+                userRepository.findAll().get(0).getId(),
+                userRepository.findAll().get(0).getId(),
+                taskStatusRepository.findAll().get(0).getId(),
+                List.of(labelRepository.findAll().get(0).getId()),
+                utils.getFirstTaskName(),
+                utils.getFirstTaskDescription()
+        );
+        final TaskDto secondTaskDto = new TaskDto(
+                userRepository.findAll().get(0).getId(),
+                userRepository.findAll().get(0).getId(),
+                taskStatusRepository.findAll().get(0).getId(),
+                List.of(labelRepository.findAll().get(0).getId()),
+                utils.getSecondTaskName(),
+                utils.getSecondTaskDescription()
+        );
+
+        utils.perform(post(TASK_CONTROLLER_PATH)
+                .content(asJson(taskDto)).contentType(APPLICATION_JSON), utils.getUserDto().getEmail());
+        utils.perform(post(TASK_CONTROLLER_PATH)
+                .content(asJson(secondTaskDto)).contentType(APPLICATION_JSON), utils.getUserDto().getEmail());
+
+        final var response = utils.perform(
+                get(TASK_CONTROLLER_PATH)
+                        .param("taskStatus", String.valueOf(taskStatusRepository.findAll().get(0).getId()))
+                        .param("executorId", String.valueOf(userRepository.findAll().get(0).getId()))
+                        .param("labels", String.valueOf(labelRepository.findAll().get(0).getId())),
+                        utils.getUserDto().getEmail())
+                .andExpect(status().isOk())
+                .andReturn()
+                .getResponse();
+
+        final List<Task> tasksFromResponse = fromJson(response.getContentAsString(), new TypeReference<>() {
+        });
+
+        assertThat(tasksFromResponse).hasSize(1);
+    }
 }
