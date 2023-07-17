@@ -72,15 +72,15 @@ public class TaskControllerIT {
         utils.createDefaultUserLoginTaskStatus();
 
         final TaskDto taskDto = new TaskDto(
-                userRepository.findAll().get(0).getId(),
-                userRepository.findAll().get(0).getId(),
-                taskStatusRepository.findAll().get(0).getId(),
+                userRepository.findByFirstName("fname").getId(),
+                userRepository.findByFirstName("fname").getId(),
+                taskStatusRepository.findByName("Новый").getId(),
                 null,
                 utils.getFirstTaskName(),
                 utils.getFirstTaskDescription()
         );
-        final User createdUser = userRepository.findAll().get(0);
-        final TaskStatus createdTaskStatus = taskStatusRepository.findAll().get(0);
+        final User createdUser = userRepository.findByFirstName("fname");
+        final TaskStatus createdTaskStatus = taskStatusRepository.findByName("Новый");
 
         final var response = utils.perform(
                         post(TASK_CONTROLLER_PATH).content(asJson(taskDto))
@@ -111,9 +111,9 @@ public class TaskControllerIT {
         utils.createDefaultUserLoginTaskStatus();
 
         final TaskDto taskDto = new TaskDto(
-                userRepository.findAll().get(0).getId(),
-                userRepository.findAll().get(0).getId(),
-                taskStatusRepository.findAll().get(0).getId(),
+                userRepository.findByFirstName("fname").getId(),
+                userRepository.findByFirstName("fname").getId(),
+                taskStatusRepository.findByName("Новый").getId(),
                 null,
                 utils.getFirstTaskName(),
                 utils.getFirstTaskDescription()
@@ -122,7 +122,7 @@ public class TaskControllerIT {
         utils.perform(post(TASK_CONTROLLER_PATH)
                 .content(asJson(taskDto)).contentType(APPLICATION_JSON), utils.getUserDto().getEmail());
 
-        final Task expectedTask = taskRepository.findAll().get(0);
+        final Task expectedTask = taskRepository.findByName("Новая задача");
         final var response = utils.perform(
                         get(TASK_CONTROLLER_PATH + ID, expectedTask.getId())
                 ).andExpect(status().isOk())
@@ -148,9 +148,9 @@ public class TaskControllerIT {
         utils.createDefaultUserLoginTaskStatus();
 
         final TaskDto taskDto = new TaskDto(
-                userRepository.findAll().get(0).getId(),
-                userRepository.findAll().get(0).getId(),
-                taskStatusRepository.findAll().get(0).getId(),
+                userRepository.findByFirstName("fname").getId(),
+                userRepository.findByFirstName("fname").getId(),
+                taskStatusRepository.findByName("Новый").getId(),
                 null,
                 utils.getFirstTaskName(),
                 utils.getFirstTaskDescription()
@@ -175,16 +175,16 @@ public class TaskControllerIT {
         utils.createSecondDefaultUser();
 
         final TaskDto taskDto = new TaskDto(
-                userRepository.findAll().get(0).getId(),
-                userRepository.findAll().get(0).getId(),
-                taskStatusRepository.findAll().get(0).getId(),
+                userRepository.findByFirstName("fname").getId(),
+                userRepository.findByFirstName("fname").getId(),
+                taskStatusRepository.findByName("Новый").getId(),
                 null,
                 utils.getFirstTaskName(),
                 utils.getFirstTaskDescription()
         );
         final TaskToUpdateDto testSecondTaskDto = new TaskToUpdateDto(
-                userRepository.findAll().get(1).getId(),
-                taskStatusRepository.findAll().get(0).getId(),
+                userRepository.findByFirstName("UPDATEDfname").getId(),
+                taskStatusRepository.findByName("Новый").getId(),
                 null,
                 utils.getSecondTaskName(),
                 utils.getSecondTaskDescription()
@@ -193,7 +193,7 @@ public class TaskControllerIT {
         utils.perform(post(TASK_CONTROLLER_PATH)
                 .content(asJson(taskDto)).contentType(APPLICATION_JSON), utils.getUserDto().getEmail());
 
-        Long createdTaskId = taskRepository.findAll().get(0).getId();
+        Long createdTaskId = taskRepository.findByName("Новая задача").getId();
         final var response = utils.perform(put(TASK_CONTROLLER_PATH + ID, createdTaskId)
                                 .content(asJson(testSecondTaskDto)).contentType(APPLICATION_JSON),
                         utils.getUserDto().getEmail()
@@ -223,9 +223,9 @@ public class TaskControllerIT {
         utils.createDefaultUserLoginTaskStatus();
 
         final TaskDto taskDto = new TaskDto(
-                userRepository.findAll().get(0).getId(),
-                userRepository.findAll().get(0).getId(),
-                taskStatusRepository.findAll().get(0).getId(),
+                userRepository.findByFirstName("fname").getId(),
+                userRepository.findByFirstName("fname").getId(),
+                taskStatusRepository.findByName("Новый").getId(),
                 null,
                 utils.getFirstTaskName(),
                 utils.getFirstTaskDescription()
@@ -234,7 +234,7 @@ public class TaskControllerIT {
         utils.perform(post(TASK_CONTROLLER_PATH)
                 .content(asJson(taskDto)).contentType(APPLICATION_JSON), utils.getUserDto().getEmail());
 
-        Long createdTaskId = taskRepository.findAll().get(0).getId();
+        Long createdTaskId = taskRepository.findByName("Новая задача").getId();
 
         utils.perform(delete(TASK_CONTROLLER_PATH + ID, createdTaskId),
                         utils.getUserDto().getEmail())
@@ -253,16 +253,16 @@ public class TaskControllerIT {
         utils.createLabel(utils.getLabelDto(), utils.getLoginDto());
 
         final TaskDto taskDto = new TaskDto(
-                userRepository.findAll().get(0).getId(),
-                userRepository.findAll().get(0).getId(),
-                taskStatusRepository.findAll().get(0).getId(),
-                List.of(labelRepository.findAll().get(0).getId()),
+                userRepository.findByFirstName("fname").getId(),
+                userRepository.findByFirstName("fname").getId(),
+                taskStatusRepository.findByName("Новый").getId(),
+                List.of(labelRepository.findByName("Новая метка").getId()),
                 utils.getFirstTaskName(),
                 utils.getFirstTaskDescription()
         );
-        final User createdUser = userRepository.findAll().get(0);
-        final TaskStatus createdTaskStatus = taskStatusRepository.findAll().get(0);
-        final Label createdLabel = labelRepository.findAll().get(0);
+        final User createdUser = userRepository.findByFirstName("fname");
+        final TaskStatus createdTaskStatus = taskStatusRepository.findByName("Новый");
+        final Label createdLabel = labelRepository.findByName("Новая метка");
         final var response = utils.perform(
                         post(TASK_CONTROLLER_PATH).content(asJson(taskDto))
                                 .contentType(APPLICATION_JSON),
@@ -295,17 +295,17 @@ public class TaskControllerIT {
         utils.createLabel(utils.getLabelDto(), utils.getLoginDto());
 
         final TaskDto taskDto = new TaskDto(
-                userRepository.findAll().get(0).getId(),
-                userRepository.findAll().get(0).getId(),
-                taskStatusRepository.findAll().get(0).getId(),
+                userRepository.findByFirstName("fname").getId(),
+                userRepository.findByFirstName("fname").getId(),
+                taskStatusRepository.findByName("Новый").getId(),
                 null,
                 utils.getFirstTaskName(),
                 utils.getFirstTaskDescription()
         );
         final TaskToUpdateDto testSecondTaskDto = new TaskToUpdateDto(
-                userRepository.findAll().get(1).getId(),
-                taskStatusRepository.findAll().get(0).getId(),
-                List.of(labelRepository.findAll().get(0).getId()),
+                userRepository.findByFirstName("UPDATEDfname").getId(),
+                taskStatusRepository.findByName("Новый").getId(),
+                List.of(labelRepository.findByName("Новая метка").getId()),
                 utils.getSecondTaskName(),
                 utils.getSecondTaskDescription()
         );
@@ -313,8 +313,8 @@ public class TaskControllerIT {
         utils.perform(post(TASK_CONTROLLER_PATH)
                 .content(asJson(taskDto)).contentType(APPLICATION_JSON), utils.getUserDto().getEmail());
 
-        Long createdTaskId = taskRepository.findAll().get(0).getId();
-        final Label createdLabel = labelRepository.findAll().get(0);
+        Long createdTaskId = taskRepository.findByName("Новая задача").getId();
+        final Label createdLabel = labelRepository.findByName("Новая метка");
         final var response = utils.perform(put(TASK_CONTROLLER_PATH + ID, createdTaskId)
                                 .content(asJson(testSecondTaskDto)).contentType(APPLICATION_JSON),
                         utils.getUserDto().getEmail()
@@ -344,20 +344,21 @@ public class TaskControllerIT {
     public void getFilteredTasksTest() throws Exception {
         utils.createDefaultUserLoginTaskStatus();
         utils.createLabel(utils.getLabelDto(), utils.getLoginDto());
+        utils.createLabel(utils.getSecondLabelDto(), utils.getLoginDto());
 
         final TaskDto taskDto = new TaskDto(
-                userRepository.findAll().get(0).getId(),
-                userRepository.findAll().get(0).getId(),
-                taskStatusRepository.findAll().get(0).getId(),
-                List.of(labelRepository.findAll().get(0).getId()),
+                userRepository.findByFirstName("fname").getId(),
+                userRepository.findByFirstName("fname").getId(),
+                taskStatusRepository.findByName("Новый").getId(),
+                List.of(labelRepository.findByName("Новая метка").getId()),
                 utils.getFirstTaskName(),
                 utils.getFirstTaskDescription()
         );
         final TaskDto secondTaskDto = new TaskDto(
-                userRepository.findAll().get(0).getId(),
-                userRepository.findAll().get(0).getId(),
-                taskStatusRepository.findAll().get(0).getId(),
-                List.of(labelRepository.findAll().get(0).getId()),
+                userRepository.findByFirstName("fname").getId(),
+                userRepository.findByFirstName("fname").getId(),
+                taskStatusRepository.findByName("Новый").getId(),
+                List.of(labelRepository.findByName("Баг").getId()),
                 utils.getSecondTaskName(),
                 utils.getSecondTaskDescription()
         );
@@ -371,7 +372,7 @@ public class TaskControllerIT {
                 get(TASK_CONTROLLER_PATH)
                         .param("taskStatus", String.valueOf(taskStatusRepository.findAll().get(0).getId()))
                         .param("executorId", String.valueOf(userRepository.findAll().get(0).getId()))
-                        .param("labels", String.valueOf(labelRepository.findAll().get(0).getId())),
+                        .param("labelsId", String.valueOf(labelRepository.findAll().get(0).getId())),
                         utils.getUserDto().getEmail())
                 .andExpect(status().isOk())
                 .andReturn()

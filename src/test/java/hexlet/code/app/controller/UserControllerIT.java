@@ -79,7 +79,7 @@ public class UserControllerIT {
     public void getUserTest() throws Exception {
         utils.createDefaultUser();
 
-        final User expectedUser = userRepository.findAll().get(0);
+        final User expectedUser = userRepository.findByFirstName("fname");
         final var response = utils.perform(
                         get(USER_CONTROLLER_PATH + ID, expectedUser.getId()),
                         expectedUser.getEmail()
@@ -114,7 +114,7 @@ public class UserControllerIT {
     public void updateUserTest() throws Exception {
         utils.createDefaultUser();
 
-        Long createdUserId = userRepository.findAll().get(0).getId();
+        Long createdUserId = userRepository.findByFirstName("fname").getId();
         final var response = utils.perform(put(USER_CONTROLLER_PATH + ID, createdUserId)
                         .content(asJson(utils.getSecondUserDto())).contentType(APPLICATION_JSON),
                         utils.getUserDto().getEmail())
@@ -137,7 +137,7 @@ public class UserControllerIT {
     public void deleteUserTest() throws Exception {
         utils.createDefaultUser();
 
-        Long createdUserId = userRepository.findAll().get(0).getId();
+        Long createdUserId = userRepository.findByFirstName("fname").getId();
 
         utils.perform(delete(USER_CONTROLLER_PATH + ID, createdUserId),
                         utils.getUserDto().getEmail())

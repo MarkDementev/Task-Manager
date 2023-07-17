@@ -83,7 +83,7 @@ public class LabelControllerIT {
     public void getLabelTest() throws Exception {
         utils.createDefaultUserLoginLabel();
 
-        final Label expectedLabel = labelRepository.findAll().get(0);
+        final Label expectedLabel = labelRepository.findByName("Новая метка");
         final var response = utils.perform(
                         get(LABEL_CONTROLLER_PATH + ID, expectedLabel.getId()),
                         utils.getUserDto().getEmail()
@@ -121,7 +121,7 @@ public class LabelControllerIT {
     public void updateLabelTest() throws Exception {
         utils.createDefaultUserLoginLabel();
 
-        Long createdLabelId = labelRepository.findAll().get(0).getId();
+        Long createdLabelId = labelRepository.findByName("Новая метка").getId();
         final var response = utils.perform(put(LABEL_CONTROLLER_PATH + ID, createdLabelId)
                                 .content(asJson(utils.getSecondLabelDto())).contentType(APPLICATION_JSON),
                         utils.getUserDto().getEmail())
@@ -145,7 +145,7 @@ public class LabelControllerIT {
     public void deleteLabelTest() throws Exception {
         utils.createDefaultUserLoginLabel();
 
-        Long createdLabelId = labelRepository.findAll().get(0).getId();
+        Long createdLabelId = labelRepository.findByName("Новая метка").getId();
 
         utils.perform(delete(LABEL_CONTROLLER_PATH + ID, createdLabelId),
                         utils.getUserDto().getEmail())

@@ -7,5 +7,5 @@ import org.springframework.stereotype.Repository;
 
 @Repository
 public interface TaskStatusRepository extends JpaRepository<TaskStatus, Long> {
-
+    TaskStatus findByName(String name);
 }

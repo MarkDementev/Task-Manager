@@ -18,4 +18,6 @@ public interface TaskRepository
     default void customize(QuerydslBindings bindings, QTask root) {
 
     }
+
+    Task findByName(String name);
 }

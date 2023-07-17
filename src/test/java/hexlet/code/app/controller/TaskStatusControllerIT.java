@@ -82,7 +82,7 @@ public class TaskStatusControllerIT {
     public void getTaskStatusTest() throws Exception {
         utils.createDefaultUserLoginTaskStatus();
 
-        final TaskStatus expectedTaskStatus = taskStatusRepository.findAll().get(0);
+        final TaskStatus expectedTaskStatus = taskStatusRepository.findByName("Новый");
         final var response = utils.perform(
                         get(TASK_STATUS_CONTROLLER_PATH + ID, expectedTaskStatus.getId())
                 ).andExpect(status().isOk())
@@ -117,7 +117,7 @@ public class TaskStatusControllerIT {
     public void updateTaskStatusTest() throws Exception {
         utils.createDefaultUserLoginTaskStatus();
 
-        Long createdTaskStatusId = taskStatusRepository.findAll().get(0).getId();
+        Long createdTaskStatusId = taskStatusRepository.findByName("Новый").getId();
         final var response = utils.perform(put(TASK_STATUS_CONTROLLER_PATH + ID, createdTaskStatusId)
                                 .content(asJson(utils.getSecondTaskStatusDto())).contentType(APPLICATION_JSON),
                                 utils.getUserDto().getEmail()
@@ -142,7 +142,7 @@ public class TaskStatusControllerIT {
     public void deleteTaskStatusTest() throws Exception {
         utils.createDefaultUserLoginTaskStatus();
 
-        Long createdTaskStatusId = taskStatusRepository.findAll().get(0).getId();
+        Long createdTaskStatusId = taskStatusRepository.findByName("Новый").getId();
 
         utils.perform(delete(TASK_STATUS_CONTROLLER_PATH + ID, createdTaskStatusId),
                         utils.getUserDto().getEmail())
