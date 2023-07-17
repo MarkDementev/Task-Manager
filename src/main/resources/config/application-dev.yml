@@ -2,9 +2,9 @@ server:
   error:
     include-stacktrace: on_param
 
-#springdoc:
-#  swagger-ui:
-#    path: /swagger-ui.html
+springdoc:
+  swagger-ui:
+    path: /swagger.html
 
 spring:
   datasource:
@@ -26,6 +26,3 @@ logging:
   level:
     root: INFO
     web: DEBUG
-    # org.hibernate.type.descriptor.sql: TRACE
-    # org.springframework.security: TRACE
-    # io.hexlet.typoreporter: DEBUG

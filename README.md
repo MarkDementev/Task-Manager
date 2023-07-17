@@ -9,3 +9,7 @@
 # Overview
 
 This project is a task management system. It allows you to set tasks, assign performers and change their statuses. Registration and authentication are required to work with the system.
+
+# Documentation link
+
+https://markdementev-java-project-73.onrender.com/swagger.html

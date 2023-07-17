@@ -5,6 +5,12 @@ import hexlet.code.app.model.User;
 import hexlet.code.app.repository.UserRepository;
 import hexlet.code.app.service.UserService;
 
+import io.swagger.v3.oas.annotations.Operation;
+import io.swagger.v3.oas.annotations.media.Content;
+import io.swagger.v3.oas.annotations.media.Schema;
+import io.swagger.v3.oas.annotations.responses.ApiResponse;
+import io.swagger.v3.oas.annotations.responses.ApiResponses;
+
 import jakarta.validation.Valid;
 
 import lombok.AllArgsConstructor;
@@ -39,28 +45,38 @@ public class UserController {
             @userRepository.findById(#id).get().getEmail() == authentication.getName()
         """;
 
+    @Operation(summary = "Get user")
+    @ApiResponse(responseCode = "200", content = @Content(schema = @Schema(implementation = User.class)))
     @GetMapping(ID)
     public User getUser(@PathVariable final Long id) {
         return userService.getUser(id);
     }
 
+    @Operation(summary = "Get users")
+    @ApiResponses(@ApiResponse(responseCode = "200", content = @Content(schema = @Schema(implementation = User.class))))
     @GetMapping
     public List<User> getUsers() {
         return userService.getUsers();
     }
 
+    @Operation(summary = "Create new user")
+    @ApiResponse(responseCode = "201", description = "User created")
     @PostMapping
     @ResponseStatus(CREATED)
     public User createNewUser(@RequestBody @Valid final UserDto dto) {
         return userService.createNewUser(dto);
     }
 
+    @Operation(summary = "Update user")
+    @ApiResponse(responseCode = "200", description = "User updated")
     @PutMapping(ID)
     @PreAuthorize(ONLY_OWNER_BY_ID)
     public User updateUser(@PathVariable final long id, @RequestBody @Valid final UserDto dto) {
         return userService.updateUser(id, dto);
     }
 
+    @Operation(summary = "Delete user")
+    @ApiResponse(responseCode = "200", description = "User deleted")
     @DeleteMapping(ID)
     @PreAuthorize(ONLY_OWNER_BY_ID)
     public void deleteUser(@PathVariable long id) {
