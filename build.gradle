@@ -15,7 +15,7 @@ group = 'hexlet.code'
 version = '1.0-SNAPSHOT'
 
 application {
-	mainClass = 'hexlet.code.app.AppApplication'
+	mainClass = 'hexlet.code.AppApplication'
 }
 
 repositories {
@@ -96,7 +96,7 @@ liquibase {
 		main {
 			changelogFile 'src/main/resources/db/changelog/db.changelog-master.yaml'
 			url 'jdbc:h2:./app'
-			referenceUrl 'hibernate:spring:hexlet.code.app.model.' +
+			referenceUrl 'hibernate:spring:hexlet.code.model.' +
 					'?dialect=org.hibernate.dialect.H2Dialect' +
 					'&hibernate.physical_naming_strategy=org.hibernate.boot.model.naming.CamelCaseToUnderscoresNamingStrategy'
 		}
