@@ -2,10 +2,6 @@ server:
   error:
     include-stacktrace: on_param
 
-springdoc:
-  swagger-ui:
-    path: /swagger.html
-
 spring:
   datasource:
     username: ""
