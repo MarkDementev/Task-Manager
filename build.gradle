@@ -43,7 +43,6 @@ dependencies {
 			'com.querydsl:querydsl-jpa:5.0.0:jakarta',
 			'org.springdoc:springdoc-openapi-starter-webmvc-ui:2.1.0',
 			'com.rollbar:rollbar-spring-boot3-webmvc:1.10.0'
-//			'com.rollbar:rollbar-spring-boot-webmvc:1.10.0'
 	)
 
 	liquibaseRuntime(
@@ -69,7 +68,7 @@ dependencies {
 }
 
 wrapper {
-	gradleVersion = '7.4'
+	gradleVersion = '8.2'
 	distributionType = Wrapper.DistributionType.ALL
 }
 
