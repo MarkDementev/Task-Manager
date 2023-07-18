@@ -12,7 +12,8 @@ import org.springframework.context.annotation.Configuration;
 @Configuration()
 @ComponentScan({
 
-        "hexlet.code.app"
+        "hexlet.code.app",
+        "com.rollbar.spring"
 
 })
 public class RollbarConfig {
