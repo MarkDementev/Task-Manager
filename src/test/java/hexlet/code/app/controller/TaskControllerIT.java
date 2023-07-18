@@ -4,7 +4,6 @@ import com.fasterxml.jackson.core.type.TypeReference;
 
 import hexlet.code.app.config.SpringConfigForIT;
 import hexlet.code.app.dto.TaskDto;
-import hexlet.code.app.dto.TaskToUpdateDto;
 import hexlet.code.app.model.Label;
 import hexlet.code.app.model.Task;
 import hexlet.code.app.model.TaskStatus;
@@ -73,7 +72,6 @@ public class TaskControllerIT {
 
         final TaskDto taskDto = new TaskDto(
                 userRepository.findByFirstName("fname").getId(),
-                userRepository.findByFirstName("fname").getId(),
                 taskStatusRepository.findByName("Новый").getId(),
                 null,
                 utils.getFirstTaskName(),
@@ -112,7 +110,6 @@ public class TaskControllerIT {
 
         final TaskDto taskDto = new TaskDto(
                 userRepository.findByFirstName("fname").getId(),
-                userRepository.findByFirstName("fname").getId(),
                 taskStatusRepository.findByName("Новый").getId(),
                 null,
                 utils.getFirstTaskName(),
@@ -149,7 +146,6 @@ public class TaskControllerIT {
 
         final TaskDto taskDto = new TaskDto(
                 userRepository.findByFirstName("fname").getId(),
-                userRepository.findByFirstName("fname").getId(),
                 taskStatusRepository.findByName("Новый").getId(),
                 null,
                 utils.getFirstTaskName(),
@@ -176,13 +172,12 @@ public class TaskControllerIT {
 
         final TaskDto taskDto = new TaskDto(
                 userRepository.findByFirstName("fname").getId(),
-                userRepository.findByFirstName("fname").getId(),
                 taskStatusRepository.findByName("Новый").getId(),
                 null,
                 utils.getFirstTaskName(),
                 utils.getFirstTaskDescription()
         );
-        final TaskToUpdateDto testSecondTaskDto = new TaskToUpdateDto(
+        final TaskDto testSecondTaskDto = new TaskDto(
                 userRepository.findByFirstName("UPDATEDfname").getId(),
                 taskStatusRepository.findByName("Новый").getId(),
                 null,
@@ -224,7 +219,6 @@ public class TaskControllerIT {
 
         final TaskDto taskDto = new TaskDto(
                 userRepository.findByFirstName("fname").getId(),
-                userRepository.findByFirstName("fname").getId(),
                 taskStatusRepository.findByName("Новый").getId(),
                 null,
                 utils.getFirstTaskName(),
@@ -253,7 +247,6 @@ public class TaskControllerIT {
         utils.createLabel(utils.getLabelDto(), utils.getLoginDto());
 
         final TaskDto taskDto = new TaskDto(
-                userRepository.findByFirstName("fname").getId(),
                 userRepository.findByFirstName("fname").getId(),
                 taskStatusRepository.findByName("Новый").getId(),
                 List.of(labelRepository.findByName("Новая метка").getId()),
@@ -296,13 +289,12 @@ public class TaskControllerIT {
 
         final TaskDto taskDto = new TaskDto(
                 userRepository.findByFirstName("fname").getId(),
-                userRepository.findByFirstName("fname").getId(),
                 taskStatusRepository.findByName("Новый").getId(),
                 null,
                 utils.getFirstTaskName(),
                 utils.getFirstTaskDescription()
         );
-        final TaskToUpdateDto testSecondTaskDto = new TaskToUpdateDto(
+        final TaskDto testSecondTaskDto = new TaskDto(
                 userRepository.findByFirstName("UPDATEDfname").getId(),
                 taskStatusRepository.findByName("Новый").getId(),
                 List.of(labelRepository.findByName("Новая метка").getId()),
@@ -348,14 +340,12 @@ public class TaskControllerIT {
 
         final TaskDto taskDto = new TaskDto(
                 userRepository.findByFirstName("fname").getId(),
-                userRepository.findByFirstName("fname").getId(),
                 taskStatusRepository.findByName("Новый").getId(),
                 List.of(labelRepository.findByName("Новая метка").getId()),
                 utils.getFirstTaskName(),
                 utils.getFirstTaskDescription()
         );
         final TaskDto secondTaskDto = new TaskDto(
-                userRepository.findByFirstName("fname").getId(),
                 userRepository.findByFirstName("fname").getId(),
                 taskStatusRepository.findByName("Новый").getId(),
                 List.of(labelRepository.findByName("Баг").getId()),

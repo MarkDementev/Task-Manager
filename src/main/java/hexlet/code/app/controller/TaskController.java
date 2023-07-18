@@ -3,7 +3,6 @@ package hexlet.code.app.controller;
 import com.querydsl.core.types.Predicate;
 
 import hexlet.code.app.dto.TaskDto;
-import hexlet.code.app.dto.TaskToUpdateDto;
 import hexlet.code.app.model.Task;
 import hexlet.code.app.service.TaskService;
 import hexlet.code.app.repository.TaskRepository;
@@ -71,7 +70,7 @@ public class TaskController {
     @Operation(summary = "Update task")
     @ApiResponse(responseCode = "200", description = "Task updated")
     @PutMapping(ID)
-    public Task updateTask(@PathVariable final long id, @RequestBody @Valid final TaskToUpdateDto dto) {
+    public Task updateTask(@PathVariable final long id, @RequestBody @Valid final TaskDto dto) {
         return taskService.updateTask(id, dto);
     }
 

@@ -13,9 +13,6 @@ import java.util.List;
 @NoArgsConstructor
 @AllArgsConstructor
 public class TaskDto {
-    @NotNull
-    private Long authorId;
-
     private Long executorId;
 
     @NotNull

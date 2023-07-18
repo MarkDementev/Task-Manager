@@ -8,6 +8,7 @@ import jakarta.transaction.Transactional;
 
 import lombok.AllArgsConstructor;
 
+import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Service;
 import org.springframework.security.crypto.password.PasswordEncoder;
 
@@ -59,5 +60,15 @@ public class UserServiceImpl implements UserService {
         final User userToDelete = userRepository.findById(id).get();
 
         userRepository.delete(userToDelete);
+    }
+
+    @Override
+    public String getCurrentUserName() {
+        return SecurityContextHolder.getContext().getAuthentication().getName();
+    }
+
+    @Override
+    public User getCurrentUser() {
+        return userRepository.findByEmail(getCurrentUserName()).get();
     }
 }

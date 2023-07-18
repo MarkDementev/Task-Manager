@@ -1,7 +1,6 @@
 package hexlet.code.app.service;
 
 import hexlet.code.app.dto.TaskDto;
-import hexlet.code.app.dto.TaskToUpdateDto;
 import hexlet.code.app.model.Task;
 import hexlet.code.app.model.Label;
 import hexlet.code.app.model.TaskStatus;
@@ -28,6 +27,7 @@ public class TaskServiceImpl implements TaskService {
     private final UserRepository userRepository;
     private final TaskStatusRepository taskStatusRepository;
     private final LabelRepository labelRepository;
+    private final UserService userService;
 
     @Override
     public Task getTask(long id) {
@@ -37,7 +37,7 @@ public class TaskServiceImpl implements TaskService {
     @Override
     public Task createTask(TaskDto taskDto) {
         final Task newTask = new Task();
-        User author = userRepository.findById(taskDto.getAuthorId()).get();
+        User author = userRepository.findById(userService.getCurrentUser().getId()).get();
         User executor = userRepository.findById(taskDto.getExecutorId()).get();
         List<Label> labels = formLabelsList(taskDto.getLabelsId());
         TaskStatus taskStatus = taskStatusRepository.findById(taskDto.getTaskStatusId()).get();
@@ -53,7 +53,7 @@ public class TaskServiceImpl implements TaskService {
     }
 
     @Override
-    public Task updateTask(long id, TaskToUpdateDto taskDto) {
+    public Task updateTask(long id, TaskDto taskDto) {
         final Task taskToUpdate = taskRepository.findById(id).get();
         User executor = userRepository.findById(taskDto.getExecutorId()).get();
         List<Label> labels = formLabelsList(taskDto.getLabelsId());
