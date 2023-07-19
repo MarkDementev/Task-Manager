@@ -3,10 +3,6 @@ server:
 
 base-url: /api
 
-springdoc:
-  swagger-ui:
-    path: /swagger.html
-
 spring:
   application:
     name: app
