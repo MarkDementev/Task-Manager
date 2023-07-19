@@ -20,7 +20,3 @@ spring:
 logging:
   level:
     ROOT: INFO
-
-springdoc:
-  swagger-ui:
-    path: /swagger.html
