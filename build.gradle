@@ -73,7 +73,7 @@ wrapper {
 }
 
 compileJava {
-	options.release = 17
+	options.release = 20
 	options.encoding = 'UTF-8'
 }
 
@@ -85,6 +85,10 @@ jacocoTestReport {
 	reports {
 		xml.required = true
 	}
+}
+
+checkstyle {
+	toolVersion '10.12.1'
 }
 
 diffChangelog {
