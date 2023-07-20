@@ -39,7 +39,7 @@ public class TaskServiceImpl implements TaskService {
         final Task newTask = new Task();
         User author = userRepository.findById(userService.getCurrentUser().getId()).get();
         User executor = userRepository.findById(taskDto.getExecutorId()).get();
-        List<Label> labels = formLabelsList(taskDto.getLabelsId());
+        List<Label> labels = formLabelsList(taskDto.getLabelIds());
         TaskStatus taskStatus = taskStatusRepository.findById(taskDto.getTaskStatusId()).get();
 
         newTask.setAuthor(author);
@@ -56,7 +56,7 @@ public class TaskServiceImpl implements TaskService {
     public Task updateTask(long id, TaskDto taskDto) {
         final Task taskToUpdate = taskRepository.findById(id).get();
         User executor = userRepository.findById(taskDto.getExecutorId()).get();
-        List<Label> labels = formLabelsList(taskDto.getLabelsId());
+        List<Label> labels = formLabelsList(taskDto.getLabelIds());
         TaskStatus taskStatus = taskStatusRepository.findById(taskDto.getTaskStatusId()).get();
 
         taskToUpdate.setExecutor(executor);
@@ -75,14 +75,14 @@ public class TaskServiceImpl implements TaskService {
         taskRepository.delete(taskToDelete);
     }
 
-    private List<Label> formLabelsList(List<Long> labelsId) {
-        if (labelsId == null) {
+    private List<Label> formLabelsList(List<Long> labelIds) {
+        if (labelIds == null) {
             return null;
         }
 
         List<Label> outputList = new ArrayList<>();
 
-        for (Long labelId : labelsId) {
+        for (Long labelId : labelIds) {
             outputList.add(labelRepository.findById(labelId).get());
         }
         return outputList;
