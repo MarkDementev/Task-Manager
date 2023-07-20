@@ -5,7 +5,6 @@ import jakarta.persistence.Table;
 import jakarta.persistence.Id;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.Temporal;
-import jakarta.persistence.OneToOne;
 import jakarta.persistence.ManyToOne;
 import jakarta.persistence.ManyToMany;
 
@@ -44,7 +43,7 @@ public class Task {
     private User executor;
 
     @NotNull
-    @OneToOne
+    @ManyToOne
     private TaskStatus taskStatus;
 
     @ManyToMany
