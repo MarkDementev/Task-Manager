@@ -4,7 +4,6 @@ import jakarta.persistence.Entity;
 import jakarta.persistence.Table;
 import jakarta.persistence.Id;
 import jakarta.persistence.GeneratedValue;
-import jakarta.persistence.Temporal;
 
 import jakarta.validation.constraints.NotBlank;
 
@@ -15,10 +14,9 @@ import lombok.Setter;
 
 import org.hibernate.annotations.CreationTimestamp;
 
-import java.util.Date;
+import java.time.Instant;
 
 import static jakarta.persistence.GenerationType.IDENTITY;
-import static jakarta.persistence.TemporalType.TIMESTAMP;
 
 @Entity
 @Table(name = "labels")
@@ -35,8 +33,7 @@ public class Label {
     private String name;
 
     @CreationTimestamp
-    @Temporal(TIMESTAMP)
-    private Date createdAt;
+    private Instant createdAt;
 
     public Label(final Long id) {
         this.id = id;

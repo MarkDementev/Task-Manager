@@ -4,7 +4,6 @@ import jakarta.persistence.Entity;
 import jakarta.persistence.Table;
 import jakarta.persistence.Id;
 import jakarta.persistence.GeneratedValue;
-import jakarta.persistence.Temporal;
 import jakarta.persistence.ManyToOne;
 import jakarta.persistence.ManyToMany;
 
@@ -18,11 +17,10 @@ import lombok.NoArgsConstructor;
 
 import org.hibernate.annotations.CreationTimestamp;
 
-import java.util.Date;
+import java.time.Instant;
 import java.util.List;
 
 import static jakarta.persistence.GenerationType.IDENTITY;
-import static jakarta.persistence.TemporalType.TIMESTAMP;
 
 @Entity
 @Table(name = "tasks")
@@ -55,8 +53,7 @@ public class Task {
     private String description;
 
     @CreationTimestamp
-    @Temporal(TIMESTAMP)
-    private Date createdAt;
+    private Instant createdAt;
 
     public Task(final Long id) {
         this.id = id;

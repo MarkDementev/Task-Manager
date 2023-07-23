@@ -4,7 +4,6 @@ import jakarta.persistence.Entity;
 import jakarta.persistence.Table;
 import jakarta.persistence.Id;
 import jakarta.persistence.GeneratedValue;
-import jakarta.persistence.Temporal;
 import jakarta.persistence.Column;
 
 import lombok.Getter;
@@ -18,10 +17,9 @@ import com.fasterxml.jackson.annotation.JsonIgnore;
 
 import org.hibernate.annotations.CreationTimestamp;
 
-import java.util.Date;
+import java.time.Instant;
 
 import static jakarta.persistence.GenerationType.IDENTITY;
-import static jakarta.persistence.TemporalType.TIMESTAMP;
 
 @Entity
 @Table(name = "users")
@@ -48,8 +46,7 @@ public class User {
     private String password;
 
     @CreationTimestamp
-    @Temporal(TIMESTAMP)
-    private Date createdAt;
+    private Instant createdAt;
 
     public User(final Long id) {
         this.id = id;

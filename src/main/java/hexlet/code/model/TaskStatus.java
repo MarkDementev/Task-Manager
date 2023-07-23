@@ -4,7 +4,6 @@ import jakarta.persistence.Entity;
 import jakarta.persistence.Table;
 import jakarta.persistence.Id;
 import jakarta.persistence.GeneratedValue;
-import jakarta.persistence.Temporal;
 
 import jakarta.validation.constraints.NotBlank;
 
@@ -16,9 +15,8 @@ import lombok.Setter;
 import org.hibernate.annotations.CreationTimestamp;
 
 import static jakarta.persistence.GenerationType.IDENTITY;
-import static jakarta.persistence.TemporalType.TIMESTAMP;
 
-import java.util.Date;
+import java.time.Instant;
 
 @Entity
 @Table(name = "taskStatuses")
@@ -35,8 +33,7 @@ public class TaskStatus {
     private String name;
 
     @CreationTimestamp
-    @Temporal(TIMESTAMP)
-    private Date createdAt;
+    private Instant createdAt;
 
     public TaskStatus(final Long id) {
         this.id = id;
