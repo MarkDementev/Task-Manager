@@ -20,7 +20,7 @@ public class TaskStatusServiceImpl implements TaskStatusService {
 
     @Override
     public TaskStatus getTaskStatus(long id) {
-        return taskStatusRepository.findById(id).get();
+        return taskStatusRepository.findById(id).orElseThrow();
     }
 
     @Override
@@ -38,7 +38,7 @@ public class TaskStatusServiceImpl implements TaskStatusService {
 
     @Override
     public TaskStatus updateTaskStatus(long id, TaskStatusDto taskStatusDto) {
-        final TaskStatus taskStatusToUpdate = taskStatusRepository.findById(id).get();
+        final TaskStatus taskStatusToUpdate = taskStatusRepository.findById(id).orElseThrow();
 
         taskStatusToUpdate.setName(taskStatusDto.getName());
         return taskStatusRepository.save(taskStatusToUpdate);
@@ -46,7 +46,7 @@ public class TaskStatusServiceImpl implements TaskStatusService {
 
     @Override
     public void deleteTaskStatus(long id) {
-        final TaskStatus taskStatusToDelete = taskStatusRepository.findById(id).get();
+        final TaskStatus taskStatusToDelete = taskStatusRepository.findById(id).orElseThrow();
 
         taskStatusRepository.delete(taskStatusToDelete);
     }

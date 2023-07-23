@@ -20,7 +20,7 @@ public class LabelServiceImpl implements LabelService {
 
     @Override
     public Label getLabel(long id) {
-        return labelRepository.findById(id).get();
+        return labelRepository.findById(id).orElseThrow();
     }
 
     @Override
@@ -39,7 +39,7 @@ public class LabelServiceImpl implements LabelService {
 
     @Override
     public Label updateLabel(long id, LabelDto labelDto) {
-        final Label labelToUpdate = labelRepository.findById(id).get();
+        final Label labelToUpdate = labelRepository.findById(id).orElseThrow();
 
         labelToUpdate.setName(labelDto.getName());
 
@@ -48,7 +48,7 @@ public class LabelServiceImpl implements LabelService {
 
     @Override
     public void deleteLabel(long id) {
-        final Label labelToDelete = labelRepository.findById(id).get();
+        final Label labelToDelete = labelRepository.findById(id).orElseThrow();
 
         labelRepository.delete(labelToDelete);
     }

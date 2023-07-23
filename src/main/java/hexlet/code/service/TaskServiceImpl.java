@@ -31,16 +31,16 @@ public class TaskServiceImpl implements TaskService {
 
     @Override
     public Task getTask(long id) {
-        return taskRepository.findById(id).get();
+        return taskRepository.findById(id).orElseThrow();
     }
 
     @Override
     public Task createTask(TaskDto taskDto) {
         final Task newTask = new Task();
-        User author = userRepository.findById(userService.getCurrentUser().getId()).get();
-        User executor = userRepository.findById(taskDto.getExecutorId()).get();
+        User author = userRepository.findById(userService.getCurrentUser().getId()).orElseThrow();
+        User executor = userRepository.findById(taskDto.getExecutorId()).orElseThrow();
         List<Label> labels = formLabelsList(taskDto.getLabelIds());
-        TaskStatus taskStatus = taskStatusRepository.findById(taskDto.getTaskStatusId()).get();
+        TaskStatus taskStatus = taskStatusRepository.findById(taskDto.getTaskStatusId()).orElseThrow();
 
         newTask.setAuthor(author);
         newTask.setExecutor(executor);
@@ -54,10 +54,10 @@ public class TaskServiceImpl implements TaskService {
 
     @Override
     public Task updateTask(long id, TaskDto taskDto) {
-        final Task taskToUpdate = taskRepository.findById(id).get();
-        User executor = userRepository.findById(taskDto.getExecutorId()).get();
+        final Task taskToUpdate = taskRepository.findById(id).orElseThrow();
+        User executor = userRepository.findById(taskDto.getExecutorId()).orElseThrow();
         List<Label> labels = formLabelsList(taskDto.getLabelIds());
-        TaskStatus taskStatus = taskStatusRepository.findById(taskDto.getTaskStatusId()).get();
+        TaskStatus taskStatus = taskStatusRepository.findById(taskDto.getTaskStatusId()).orElseThrow();
 
         taskToUpdate.setExecutor(executor);
         taskToUpdate.setTaskStatus(taskStatus);
@@ -70,7 +70,7 @@ public class TaskServiceImpl implements TaskService {
 
     @Override
     public void deleteTask(long id) {
-        final Task taskToDelete = taskRepository.findById(id).get();
+        final Task taskToDelete = taskRepository.findById(id).orElseThrow();
 
         taskRepository.delete(taskToDelete);
     }
@@ -83,7 +83,7 @@ public class TaskServiceImpl implements TaskService {
         List<Label> outputList = new ArrayList<>();
 
         for (Long labelId : labelIds) {
-            outputList.add(labelRepository.findById(labelId).get());
+            outputList.add(labelRepository.findById(labelId).orElseThrow());
         }
         return outputList;
     }
