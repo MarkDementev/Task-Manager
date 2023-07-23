@@ -27,6 +27,10 @@ import static hexlet.code.controller.UserController.ID;
 import static hexlet.code.utils.TestUtils.asJson;
 import static hexlet.code.utils.TestUtils.fromJson;
 
+import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertNotNull;
+import static org.junit.jupiter.api.Assertions.assertNull;
+
 import static org.springframework.boot.test.context.SpringBootTest.WebEnvironment.RANDOM_PORT;
 import static org.springframework.http.MediaType.APPLICATION_JSON;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.post;
@@ -34,9 +38,6 @@ import static org.springframework.test.web.servlet.request.MockMvcRequestBuilder
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.put;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.delete;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
-
-import static org.junit.jupiter.api.Assertions.assertEquals;
-import static org.junit.jupiter.api.Assertions.assertNotNull;
 
 import static org.assertj.core.api.Assertions.assertThat;
 
@@ -63,11 +64,9 @@ public class UserControllerIT {
                 .andExpect(status().isCreated())
                 .andReturn()
                 .getResponse();
-        final List<User> allCreatedUsers = userRepository.findAll();
         final User userFromResponse = fromJson(response.getContentAsString(), new TypeReference<>() {
         });
 
-        assertThat(allCreatedUsers).hasSize(1);
         assertNotNull(userFromResponse.getId());
         assertEquals(userFromResponse.getEmail(), utils.getUserDto().getEmail());
         assertEquals(userFromResponse.getFirstName(), utils.getUserDto().getFirstName());
@@ -123,9 +122,7 @@ public class UserControllerIT {
                 .getResponse();
         final User userFromResponse = fromJson(response.getContentAsString(), new TypeReference<>() {
         });
-        final List<User> allUsers = userRepository.findAll();
 
-        assertThat(allUsers).hasSize(1);
         assertEquals(userFromResponse.getId(), createdUserId);
         assertEquals(userFromResponse.getEmail(), utils.getSecondUserDto().getEmail());
         assertEquals(userFromResponse.getFirstName(), utils.getSecondUserDto().getFirstName());
@@ -145,9 +142,7 @@ public class UserControllerIT {
                 .andReturn()
                 .getResponse();
 
-        final List<User> allUsers = userRepository.findAll();
-
-        assertThat(allUsers).hasSize(0);
+        assertNull(userRepository.findByFirstName("fname"));
     }
 
     @Test

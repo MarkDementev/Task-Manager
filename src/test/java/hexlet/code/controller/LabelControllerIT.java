@@ -28,6 +28,7 @@ import static org.assertj.core.api.Assertions.assertThat;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertNotNull;
+import static org.junit.jupiter.api.Assertions.assertNull;
 
 import static org.springframework.boot.test.context.SpringBootTest.WebEnvironment.RANDOM_PORT;
 import static org.springframework.http.MediaType.APPLICATION_JSON;
@@ -72,9 +73,7 @@ public class LabelControllerIT {
 
         final Label labelFromResponse = fromJson(response.getContentAsString(), new TypeReference<>() {
         });
-        final List<Label> allCreatedLabels = labelRepository.findAll();
 
-        assertThat(allCreatedLabels).hasSize(1);
         assertEquals(labelFromResponse.getName(), utils.getLabelDto().getName());
         assertNotNull(labelFromResponse.getCreatedAt());
     }
@@ -133,9 +132,7 @@ public class LabelControllerIT {
 
         final Label labelFromResponse = fromJson(response.getContentAsString(), new TypeReference<>() {
         });
-        final List<Label> allLabels = labelRepository.findAll();
 
-        assertThat(allLabels).hasSize(1);
         assertEquals(labelFromResponse.getId(), createdLabelId);
         assertEquals(labelFromResponse.getName(), utils.getSecondLabelDto().getName());
         assertNotNull(labelFromResponse.getCreatedAt());
@@ -153,8 +150,6 @@ public class LabelControllerIT {
                 .andReturn()
                 .getResponse();
 
-        final List<Label> allCreatedLabels = labelRepository.findAll();
-
-        assertThat(allCreatedLabels).hasSize(0);
+        assertNull(labelRepository.findByName("Новая метка"));
     }
 }

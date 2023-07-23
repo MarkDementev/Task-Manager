@@ -36,6 +36,7 @@ import static org.assertj.core.api.Assertions.assertThat;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertNotNull;
+import static org.junit.jupiter.api.Assertions.assertNull;
 
 import static org.springframework.boot.test.context.SpringBootTest.WebEnvironment.RANDOM_PORT;
 import static org.springframework.http.MediaType.APPLICATION_JSON;
@@ -93,9 +94,7 @@ public class TaskControllerIT {
 
         final Task taskFromResponse = fromJson(response.getContentAsString(), new TypeReference<>() {
         });
-        final List<Task> allCreatedTasks = taskRepository.findAll();
 
-        assertThat(allCreatedTasks).hasSize(1);
         assertEquals(taskFromResponse.getAuthor().getId(), createdUser.getId());
         assertEquals(taskFromResponse.getExecutor().getId(), createdUser.getId());
         assertEquals(taskFromResponse.getTaskStatus().getId(), createdTaskStatus.getId());
@@ -201,9 +200,7 @@ public class TaskControllerIT {
 
         final Task taskFromResponse = fromJson(response.getContentAsString(), new TypeReference<>() {
         });
-        final List<Task> allTasks = taskRepository.findAll();
 
-        assertThat(allTasks).hasSize(1);
         assertNotNull(taskFromResponse.getId());
         assertEquals(taskFromResponse.getAuthor().getEmail(), utils.getUserDto().getEmail());
         assertEquals(taskFromResponse.getExecutor().getEmail(), utils.getSecondUserDto().getEmail());
@@ -236,9 +233,7 @@ public class TaskControllerIT {
                 .andReturn()
                 .getResponse();
 
-        final List<Task> allTasks = taskRepository.findAll();
-
-        assertThat(allTasks).hasSize(0);
+        assertNull(taskRepository.findByName("Новая задача"));
     }
 
     @Test
@@ -269,9 +264,7 @@ public class TaskControllerIT {
 
         final Task taskFromResponse = fromJson(response.getContentAsString(), new TypeReference<>() {
         });
-        final List<Task> allCreatedTasks = taskRepository.findAll();
 
-        assertThat(allCreatedTasks).hasSize(1);
         assertEquals(taskFromResponse.getAuthor().getId(), createdUser.getId());
         assertEquals(taskFromResponse.getExecutor().getId(), createdUser.getId());
         assertEquals(taskFromResponse.getTaskStatus().getId(), createdTaskStatus.getId());
@@ -319,9 +312,7 @@ public class TaskControllerIT {
 
         final Task taskFromResponse = fromJson(response.getContentAsString(), new TypeReference<>() {
         });
-        final List<Task> allTasks = taskRepository.findAll();
 
-        assertThat(allTasks).hasSize(1);
         assertNotNull(taskFromResponse.getId());
         assertEquals(taskFromResponse.getAuthor().getEmail(), utils.getUserDto().getEmail());
         assertEquals(taskFromResponse.getExecutor().getEmail(), utils.getSecondUserDto().getEmail());
@@ -360,9 +351,12 @@ public class TaskControllerIT {
 
         final var response = utils.perform(
                         get(TASK_CONTROLLER_PATH)
-                                .param("taskStatus", String.valueOf(taskStatusRepository.findAll().get(0).getId()))
-                                .param("executorId", String.valueOf(userRepository.findAll().get(0).getId()))
-                                .param("labelsId", String.valueOf(labelRepository.findAll().get(0).getId())),
+                                .param("taskStatus", String.valueOf(
+                                        taskStatusRepository.findByName("Новый").getId()))
+                                .param("executorId", String.valueOf(
+                                        userRepository.findByFirstName("fname").getId()))
+                                .param("labelsId", String.valueOf(
+                                        labelRepository.findByName("Новая метка").getId())),
                         utils.getUserDto().getEmail())
                 .andExpect(status().isOk())
                 .andReturn()

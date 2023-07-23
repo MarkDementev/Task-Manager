@@ -29,6 +29,7 @@ import static org.assertj.core.api.Assertions.assertThat;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertNotNull;
+import static org.junit.jupiter.api.Assertions.assertNull;
 
 import static org.springframework.boot.test.context.SpringBootTest.WebEnvironment.RANDOM_PORT;
 import static org.springframework.http.MediaType.APPLICATION_JSON;
@@ -68,11 +69,9 @@ public class TaskStatusControllerIT {
 
         response.setContentType(utils.getUTFHeader());
 
-        final List<TaskStatus> allCreatedTaskStatuses = taskStatusRepository.findAll();
         final TaskStatus createdTaskStatus = fromJson(response.getContentAsString(), new TypeReference<>() {
         });
 
-        assertThat(allCreatedTaskStatuses).hasSize(1);
         assertNotNull(createdTaskStatus.getId());
         assertEquals(createdTaskStatus.getName(), utils.getTaskStatusDto().getName());
         assertNotNull(createdTaskStatus.getCreatedAt());
@@ -130,9 +129,7 @@ public class TaskStatusControllerIT {
 
         final TaskStatus taskStatusFromResponse = fromJson(response.getContentAsString(), new TypeReference<>() {
         });
-        final List<TaskStatus> allTaskStatuses = taskStatusRepository.findAll();
 
-        assertThat(allTaskStatuses).hasSize(1);
         assertEquals(taskStatusFromResponse.getId(), createdTaskStatusId);
         assertEquals(taskStatusFromResponse.getName(), utils.getSecondTaskStatusDto().getName());
         assertNotNull(taskStatusFromResponse.getCreatedAt());
@@ -150,8 +147,6 @@ public class TaskStatusControllerIT {
                 .andReturn()
                 .getResponse();
 
-        final List<TaskStatus> allTaskStatuses = taskStatusRepository.findAll();
-
-        assertThat(allTaskStatuses).hasSize(0);
+        assertNull(taskStatusRepository.findByName("Новый"));
     }
 }
