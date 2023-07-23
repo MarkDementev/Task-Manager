@@ -1,5 +1,5 @@
 setup:
-	gradle wrapper --gradle-version 8.2.1
+	./gradlew wrapper --gradle-version 8.2.1
 
 clean:
 	./gradlew clean
@@ -29,7 +29,7 @@ check-updates:
 	./gradlew dependencyUpdates
 
 generate-migrations:
-	gradle diffChangeLog
+	./gradlew diffChangeLog
 
 db-migrate:
 	./gradlew update
