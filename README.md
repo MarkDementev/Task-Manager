@@ -10,6 +10,22 @@
 
 This project is a task management system. It allows you to set tasks, assign performers and change their statuses. Registration and authentication are required to work with the system.
 
+## System requirements
+
+* Java >= 20.0.1
+* Gradle 8.2.1
+
+## Setup
+
+```sh
+make install # ./gradlew installDist
+make start # run server http://localhost:5001
+make test # run tests
+make lint # run linter
+
+make generate-migrations # new migrations if added models corrections
+```
+
 # Project link
 
 https://markdementev-java-project-73.onrender.com
