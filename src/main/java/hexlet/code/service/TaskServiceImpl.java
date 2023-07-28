@@ -23,6 +23,7 @@ import java.util.List;
 @Transactional
 @AllArgsConstructor
 public class TaskServiceImpl implements TaskService {
+
     private final TaskRepository taskRepository;
     private final UserRepository userRepository;
     private final TaskStatusRepository taskStatusRepository;

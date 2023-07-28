@@ -16,6 +16,7 @@ import static io.jsonwebtoken.impl.TextCodec.BASE64;
 
 @Component
 public class JWTHelper {
+
     private final String secretKey;
     private final String issuer;
     private final Long expirationSec;

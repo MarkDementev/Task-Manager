@@ -16,6 +16,7 @@ import java.util.List;
 @Transactional
 @AllArgsConstructor
 public class TaskStatusServiceImpl implements TaskStatusService {
+
     private final TaskStatusRepository taskStatusRepository;
 
     @Override

@@ -23,6 +23,7 @@ import org.springframework.security.web.authentication.UsernamePasswordAuthentic
 import org.springframework.security.web.util.matcher.RequestMatcher;
 
 public class JWTAuthenticationFilter extends UsernamePasswordAuthenticationFilter {
+
     private static final ObjectMapper MAPPER = new ObjectMapper();
     private final JWTHelper jwtHelper;
 

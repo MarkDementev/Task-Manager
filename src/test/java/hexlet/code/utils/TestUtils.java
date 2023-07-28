@@ -34,6 +34,7 @@ import static org.springframework.http.MediaType.APPLICATION_JSON;
 
 @Component
 public class TestUtils {
+
     @Autowired
     private UserRepository userRepository;
     @Autowired

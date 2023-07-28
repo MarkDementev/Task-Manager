@@ -25,6 +25,7 @@ import static jakarta.persistence.GenerationType.IDENTITY;
 @Getter
 @Setter
 public class Label {
+
     @Id
     @GeneratedValue(strategy = IDENTITY)
     private Long id;

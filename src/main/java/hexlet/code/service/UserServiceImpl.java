@@ -18,6 +18,7 @@ import java.util.List;
 @Transactional
 @AllArgsConstructor
 public class UserServiceImpl implements UserService {
+
     private final UserRepository userRepository;
     private final PasswordEncoder passwordEncoder;
 

@@ -46,6 +46,7 @@ import static org.assertj.core.api.Assertions.assertThat;
 @ExtendWith(SpringExtension.class)
 @SpringBootTest(webEnvironment = RANDOM_PORT, classes = SpringConfigForIT.class)
 public class UserControllerIT {
+
     @Autowired
     private UserRepository userRepository;
     @Autowired

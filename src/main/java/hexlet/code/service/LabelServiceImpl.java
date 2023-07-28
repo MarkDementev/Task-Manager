@@ -16,6 +16,7 @@ import java.util.List;
 @Transactional
 @AllArgsConstructor
 public class LabelServiceImpl implements LabelService {
+
     private final LabelRepository labelRepository;
 
     @Override

@@ -36,6 +36,7 @@ import static org.springframework.http.HttpStatus.CREATED;
 @SecurityRequirement(name = "javainuseapi")
 @RequestMapping("${base-url}" + LABEL_CONTROLLER_PATH)
 public class LabelController {
+
     public static final String LABEL_CONTROLLER_PATH = "/labels";
     public static final String ID = "/{id}";
     private final LabelService labelService;
@@ -77,12 +78,3 @@ public class LabelController {
         labelService.deleteLabel(id);
     }
 }
-
-
-
-
-
-
-
-
-

@@ -17,6 +17,7 @@ import org.springframework.context.annotation.Configuration;
 
 })
 public class RollbarConfig {
+
     @Value("${ROLLBAR_TOKEN:}")
     private String rollbarToken;
 

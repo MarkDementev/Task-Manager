@@ -39,6 +39,7 @@ import static org.springframework.http.HttpMethod.POST;
 @EnableWebSecurity
 @EnableMethodSecurity
 public class SecurityConfig {
+
     public static final String LOGIN = "/login";
     public static final List<GrantedAuthority> DEFAULT_AUTHORITIES = List.of(new SimpleGrantedAuthority("USER"));
     private final UserDetailsService userDetailsService;

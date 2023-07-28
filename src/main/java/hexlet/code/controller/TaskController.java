@@ -37,6 +37,7 @@ import static org.springframework.http.HttpStatus.CREATED;
 @RestController
 @RequestMapping("${base-url}" + TASK_CONTROLLER_PATH)
 public class TaskController {
+
     public static final String TASK_CONTROLLER_PATH = "/tasks";
     public static final String ID = "/{id}";
     private static final String ONLY_AUTHOR_BY_ID = """

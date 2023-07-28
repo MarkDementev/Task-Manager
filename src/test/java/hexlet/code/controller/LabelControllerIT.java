@@ -45,6 +45,7 @@ import static hexlet.code.controller.LabelController.LABEL_CONTROLLER_PATH;
 @ExtendWith(SpringExtension.class)
 @SpringBootTest(webEnvironment = RANDOM_PORT, classes = SpringConfigForIT.class)
 public class LabelControllerIT {
+
     @Autowired
     private LabelRepository labelRepository;
     @Autowired

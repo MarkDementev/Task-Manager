@@ -25,6 +25,7 @@ import java.time.Instant;
 @NoArgsConstructor
 @AllArgsConstructor
 public class TaskStatus {
+
     @Id
     @GeneratedValue(strategy = IDENTITY)
     private Long id;
